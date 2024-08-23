@@ -6,6 +6,6 @@ import { ButtonAppBar } from './Shared/AppBar.tsx'
 
 createRoot(document.getElementById('root')!).render(
   <StrictMode>
- <ButtonAppBar />
-  </StrictMode>,
+    <ButtonAppBar />
+  </StrictMode>
 )
