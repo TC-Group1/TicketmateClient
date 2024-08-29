@@ -5,7 +5,6 @@ export const registrationStyle: StyleSheet = {
     display: 'flex',
     width: '100vw',
     height: '100vh',
-    justifyContent: 'space-evenly',
     alignItems: 'center',
   },
   imageBox: {
@@ -16,22 +15,33 @@ export const registrationStyle: StyleSheet = {
     justifyContent: 'center',
     alignItems: 'center',
   },
-  formBox: {
-    width: '5%',
+  formDiv: {
+    width: '58%',
     height: 'inherit',
     display: 'flex',
     justifyContent: 'center',
     alignItems: 'center',
   },
-  h1: {},
+  form: {
+    padding: '10px 25px',
+    display: 'flex',
+    flexDirection: 'column',
+  },
+  h1: {
+    fontSize: '3.5rem',
+    marginBottom: 0.5,
+  },
   h2: {},
   h3: {},
   button: {
     primary: {},
     secondary: {},
   },
-  input: {},
-  inputLabel: {},
+  textField: {
+    width: '85%',
+    maxWidth: '800px',
+    marginBottom: 0.25,
+  },
   divider: {},
   smallIcon: {},
   largeIcon: {},
