@@ -4,9 +4,14 @@ import { registrationStyle } from '../styles/registrationStyle'
 import { LabeledTextField } from './LabeledTextField'
 import EmailIcon from '@mui/icons-material/Email'
 import { MyHeadings } from './Headings'
+import { MySSOButton } from './Button'
+import GoogleIcon from '@mui/icons-material/Google'
+import { MyDivider } from './Divider'
+import PhoneIcon from '@mui/icons-material/Phone'
 
 export const RegistrationForm = () => {
   const showImageBox = useMediaQuery('(min-width:900px)')
+  const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
   return (
     <Box
@@ -26,26 +31,93 @@ export const RegistrationForm = () => {
           sx={[
             registrationStyle.form,
             {
-              marginLeft: { xs: '0', md: '45px' },
-              justifyContent: { xs: 'center', md: 'flex-start' },
-              alignItems: { xs: 'center', md: 'flex-start' },
               width: { xs: '95%', md: '80%' },
             },
           ]}
         >
-          <MyHeadings text={'Registration'} sx={registrationStyle.h1} />
-          <MyHeadings text={'Registration'} sx={registrationStyle.h1} />
-          <MyHeadings text={'Registration'} sx={registrationStyle.h1} />
-          <LabeledTextField
+          <Box
             sx={[
-              registrationStyle.textField,
-              { width: { xs: '100%', md: '85%' } },
+              registrationStyle.ssoBox,
+              {
+                width: { xs: '95%', md: '80%' },
+              },
             ]}
-            label={'Email'}
-            icon={<EmailIcon />}
-            position={'start'}
-            type={'text'}
-          />
+          >
+            <MyHeadings
+              text={'Create your account'}
+              sx={registrationStyle.h1}
+            />
+            <MyHeadings
+              text={'Get started with TicketMate today'}
+              sx={registrationStyle.h2}
+            />
+            <MySSOButton
+              sx={registrationStyle.ssoButton}
+              label={'Login with Google'}
+              icon={<GoogleIcon />}
+            />
+          </Box>
+          <Box sx={{ width: '100%' }}>
+            <MyDivider sx={registrationStyle.divider} text={'or'} />
+          </Box>
+          <Box
+            sx={[
+              registrationStyle.form,
+              {
+                width: { xs: '95%', md: '80%' },
+              },
+            ]}
+          >
+            <LabeledTextField
+              sx={[
+                registrationStyle.textField,
+                { width: { xs: '100%', md: '85%' } },
+              ]}
+              label={'Email'}
+              icon={<EmailIcon />}
+              position={'start'}
+              type={'text'}
+              prefersDarkMode={prefersDarkMode}
+            />
+            <LabeledTextField
+              sx={[
+                registrationStyle.textField,
+                { width: { xs: '100%', md: '85%' } },
+              ]}
+              label={'Phone Number (optional)'}
+              icon={<PhoneIcon />}
+              position={'start'}
+              type={'text'}
+              prefersDarkMode={prefersDarkMode}
+            />
+            <LabeledTextField
+              sx={[
+                registrationStyle.textField,
+                { width: { xs: '100%', md: '85%' } },
+              ]}
+              label={'First Name'}
+              type={'text'}
+              prefersDarkMode={prefersDarkMode}
+            />
+            <LabeledTextField
+              sx={[
+                registrationStyle.textField,
+                { width: { xs: '100%', md: '85%' } },
+              ]}
+              label={'Last Name'}
+              type={'text'}
+              prefersDarkMode={prefersDarkMode}
+            />
+            <LabeledTextField
+              sx={[
+                registrationStyle.textField,
+                { width: { xs: '100%', md: '85%' } },
+              ]}
+              label={'Password'}
+              type={'text'}
+              prefersDarkMode={prefersDarkMode}
+            />
+          </Box>
         </Box>
       </Box>
     </Box>

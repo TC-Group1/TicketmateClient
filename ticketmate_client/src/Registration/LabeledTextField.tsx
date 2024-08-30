@@ -5,6 +5,7 @@ import {
   InputLabel,
   OutlinedInput,
   TextField,
+  useMediaQuery,
 } from '@mui/material'
 
 interface TextFieldProps {
@@ -13,6 +14,7 @@ interface TextFieldProps {
   icon?: ReactNode
   sx: {}
   type: string
+  prefersDarkMode: boolean
 }
 
 export const LabeledTextField: FC<TextFieldProps> = ({
@@ -21,11 +23,12 @@ export const LabeledTextField: FC<TextFieldProps> = ({
   position,
   type,
   sx,
+  prefersDarkMode,
 }) => {
   return (
     <>
       <TextField
-        sx={sx}
+        sx={[sx, { color: prefersDarkMode ? '#fff' : '#000' }]}
         type={'text'}
         label={label}
         InputProps={{
