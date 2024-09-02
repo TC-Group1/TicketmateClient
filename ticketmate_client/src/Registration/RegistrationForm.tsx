@@ -13,6 +13,7 @@ import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import img from '../assets/registrationPlaceholderImg.png'
 import { emailRegex, passwordRegex, phoneRegex } from '../Lib/Constants'
+import { Footer } from '../Shared/Footer'
 
 export const RegistrationForm: FC<User> = () => {
   const [formData, setFormData] = useState({
@@ -110,73 +111,34 @@ export const RegistrationForm: FC<User> = () => {
 
   return (
     <Box
-      sx={[
-        registrationStyle.container,
-        {
-          flexDirection: { xs: 'column', md: 'row' },
-          justifyContent: { xs: 'center', md: 'space-evenly' },
-        },
-      ]}
+      sx={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: '100%',
+        height: '100%',
+      }}
     >
-      {showImageBox ? (
-        <Box sx={registrationStyle.imageBox}>
-          <img
-            src={img}
-            alt={'Abstract TicketMate Image'}
-            style={{ objectFit: 'cover', width: '100%', height: '100%' }}
-          />
-        </Box>
-      ) : null}
-      <Box sx={registrationStyle.formDiv}>
-        <Box
-          sx={[
-            registrationStyle.form,
-            {
-              width: { xs: '95%', md: '80%' },
-            },
-          ]}
-        >
-          <Box
-            sx={[
-              registrationStyle.ssoBox,
-              {
-                width: { xs: '95%', md: '80%' },
-              },
-            ]}
-          >
-            <MyHeadings
-              text={'Create your account'}
-              sx={registrationStyle.h1}
-            />
-            <MyHeadings
-              text={'Get started with TicketMate today'}
-              sx={registrationStyle.h2}
-            />
-            <MyButton
-              sx={[
-                registrationStyle.ssoButton,
-                {
-                  border: prefersDarkMode ? '1px solid #fff' : '1px solid #bbb',
-                },
-              ]}
-              typography={registrationStyle.ssoTypography}
-              // Should the label read 'Sign up with Google'?
-              label={'Login with Google'}
-              icon={<GoogleIcon />}
-              func={handleSSOClick}
+      <Box
+        sx={[
+          registrationStyle.container,
+          {
+            flexDirection: { xs: 'column', md: 'row' },
+            justifyContent: { xs: 'center', md: 'space-evenly' },
+          },
+        ]}
+      >
+        {showImageBox ? (
+          <Box sx={registrationStyle.imageBox}>
+            <img
+              src={img}
+              alt={'Abstract TicketMate Image'}
+              style={{ objectFit: 'cover', width: '100%', height: '100%' }}
             />
           </Box>
-          <Box sx={{ width: '100%' }}>
-            <MyDivider
-              sx={[
-                registrationStyle.divider,
-                {
-                  color: prefersDarkMode ? '1px solid #fff' : '1px solid #eee',
-                },
-              ]}
-              text={'or'}
-            />
-          </Box>
+        ) : null}
+        <Box sx={registrationStyle.formDiv}>
           <Box
             sx={[
               registrationStyle.form,
@@ -185,166 +147,225 @@ export const RegistrationForm: FC<User> = () => {
               },
             ]}
           >
-            <LabeledTextField
+            <Box
               sx={[
-                registrationStyle.textField,
+                registrationStyle.ssoBox,
                 {
-                  width: { xs: '100%', md: '85%' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #eee',
+                  width: { xs: '95%', md: '80%' },
+                },
+              ]}
+            >
+              <MyHeadings
+                text={'Create your account'}
+                sx={registrationStyle.h1}
+              />
+              <MyHeadings
+                text={'Get started with TicketMate today'}
+                sx={registrationStyle.h2}
+              />
+              <MyButton
+                sx={[
+                  registrationStyle.ssoButton,
+                  {
+                    border: prefersDarkMode
+                      ? '1px solid #fff'
+                      : '1px solid #bbb',
+                  },
+                ]}
+                typography={registrationStyle.ssoTypography}
+                // Should the label read 'Sign up with Google'?
+                label={'Login with Google'}
+                icon={<GoogleIcon />}
+                func={handleSSOClick}
+              />
+            </Box>
+            <Box sx={{ width: '100%' }}>
+              <MyDivider
+                sx={[
+                  registrationStyle.divider,
+                  {
+                    color: prefersDarkMode
+                      ? '1px solid #fff'
+                      : '1px solid #eee',
+                  },
+                ]}
+                text={'or'}
+              />
+            </Box>
+            <Box
+              sx={[
+                registrationStyle.form,
+                {
+                  width: { xs: '95%', md: '80%' },
+                },
+              ]}
+            >
+              <LabeledTextField
+                sx={[
+                  registrationStyle.textField,
+                  {
+                    width: { xs: '100%', md: '85%' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: prefersDarkMode
+                          ? '1px solid #fff'
+                          : '1px solid #eee',
+                      },
+                    },
+                    '& .MuiFormHelperText-root': {
+                      fontSize: '.9rem',
                     },
                   },
-                  '& .MuiFormHelperText-root': {
-                    fontSize: '.9rem',
-                  },
-                },
-              ]}
-              error={errors.emailError}
-              label={'Email'}
-              name={'email'}
-              value={formData.email}
-              onChange={handleInputField}
-              helperText={emailHelperText}
-              icon={<EmailIcon />}
-              position={'start'}
-              type={'text'}
-              prefersDarkMode={prefersDarkMode}
-            />
-            <LabeledTextField
-              sx={[
-                registrationStyle.textField,
-                {
-                  width: { xs: '100%', md: '85%' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #eee',
+                ]}
+                error={errors.emailError}
+                label={'Email'}
+                name={'email'}
+                value={formData.email}
+                onChange={handleInputField}
+                helperText={emailHelperText}
+                icon={<EmailIcon />}
+                position={'start'}
+                type={'text'}
+                prefersDarkMode={prefersDarkMode}
+              />
+              <LabeledTextField
+                sx={[
+                  registrationStyle.textField,
+                  {
+                    width: { xs: '100%', md: '85%' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: prefersDarkMode
+                          ? '1px solid #fff'
+                          : '1px solid #eee',
+                      },
+                    },
+                    '& .MuiFormHelperText-root': {
+                      fontSize: '.9rem',
                     },
                   },
-                  '& .MuiFormHelperText-root': {
-                    fontSize: '.9rem',
-                  },
-                },
-              ]}
-              error={errors.phoneError}
-              name={'phone'}
-              value={formData.phone}
-              onChange={handleInputField}
-              label={'Phone Number (optional)'}
-              helperText={errors.phoneError ? 'Invalid phone number' : ''}
-              icon={<PhoneIcon />}
-              position={'start'}
-              type={'text'}
-              prefersDarkMode={prefersDarkMode}
-            />
-            <LabeledTextField
-              sx={[
-                registrationStyle.textField,
-                {
-                  width: { xs: '100%', md: '85%' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #eee',
+                ]}
+                error={errors.phoneError}
+                name={'phone'}
+                value={formData.phone}
+                onChange={handleInputField}
+                label={'Phone Number (optional)'}
+                helperText={errors.phoneError ? 'Invalid phone number' : ''}
+                icon={<PhoneIcon />}
+                position={'start'}
+                type={'text'}
+                prefersDarkMode={prefersDarkMode}
+              />
+              <LabeledTextField
+                sx={[
+                  registrationStyle.textField,
+                  {
+                    width: { xs: '100%', md: '85%' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: prefersDarkMode
+                          ? '1px solid #fff'
+                          : '1px solid #eee',
+                      },
+                    },
+                    '& .MuiFormHelperText-root': {
+                      fontSize: '.9rem',
                     },
                   },
-                  '& .MuiFormHelperText-root': {
-                    fontSize: '.9rem',
-                  },
-                },
-              ]}
-              error={errors.firstNameError}
-              name={'firstName'}
-              label={'First Name'}
-              helperText={errors.firstNameError ? 'First name is required' : ''}
-              value={formData.firstName}
-              onChange={handleInputField}
-              type={'text'}
-              prefersDarkMode={prefersDarkMode}
-            />
-            <LabeledTextField
-              sx={[
-                registrationStyle.textField,
-                {
-                  width: { xs: '100%', md: '85%' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #eee',
+                ]}
+                error={errors.firstNameError}
+                name={'firstName'}
+                label={'First Name'}
+                helperText={
+                  errors.firstNameError ? 'First name is required' : ''
+                }
+                value={formData.firstName}
+                onChange={handleInputField}
+                type={'text'}
+                prefersDarkMode={prefersDarkMode}
+              />
+              <LabeledTextField
+                sx={[
+                  registrationStyle.textField,
+                  {
+                    width: { xs: '100%', md: '85%' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: prefersDarkMode
+                          ? '1px solid #fff'
+                          : '1px solid #eee',
+                      },
+                    },
+                    '& .MuiFormHelperText-root': {
+                      fontSize: '.9rem',
                     },
                   },
-                  '& .MuiFormHelperText-root': {
-                    fontSize: '.9rem',
-                  },
-                },
-              ]}
-              error={errors.lastNameError}
-              name={'lastName'}
-              label={'Last Name'}
-              helperText={errors.lastNameError ? 'Last name is required' : ''}
-              value={formData.lastName}
-              onChange={handleInputField}
-              type={'text'}
-              prefersDarkMode={prefersDarkMode}
-            />
-            <LabeledTextField
-              sx={[
-                registrationStyle.textField,
-                {
-                  width: { xs: '100%', md: '85%' },
-                  '& .MuiOutlinedInput-root': {
-                    '& fieldset': {
-                      borderColor: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #eee',
+                ]}
+                error={errors.lastNameError}
+                name={'lastName'}
+                label={'Last Name'}
+                helperText={errors.lastNameError ? 'Last name is required' : ''}
+                value={formData.lastName}
+                onChange={handleInputField}
+                type={'text'}
+                prefersDarkMode={prefersDarkMode}
+              />
+              <LabeledTextField
+                sx={[
+                  registrationStyle.textField,
+                  {
+                    width: { xs: '100%', md: '85%' },
+                    '& .MuiOutlinedInput-root': {
+                      '& fieldset': {
+                        borderColor: prefersDarkMode
+                          ? '1px solid #fff'
+                          : '1px solid #eee',
+                      },
+                    },
+                    '& .MuiFormHelperText-root': {
+                      fontSize: '.9rem',
                     },
                   },
-                  '& .MuiFormHelperText-root': {
-                    fontSize: '.9rem',
+                ]}
+                error={errors.passwordError}
+                helperText={
+                  errors.passwordError
+                    ? 'Password does not meet requirements'
+                    : ''
+                }
+                name={'password'}
+                label={'Password'}
+                value={formData.password}
+                onChange={handleInputField}
+                type={'text'}
+                prefersDarkMode={prefersDarkMode}
+              />
+              <MyButton
+                sx={[
+                  registrationStyle.button.primary,
+                  {
+                    border: prefersDarkMode
+                      ? '1px solid #fff'
+                      : '1px solid #bbb',
                   },
-                },
-              ]}
-              error={errors.passwordError}
-              helperText={
-                errors.passwordError
-                  ? 'Password does not meet requirements'
-                  : ''
-              }
-              name={'password'}
-              label={'Password'}
-              value={formData.password}
-              onChange={handleInputField}
-              type={'text'}
-              prefersDarkMode={prefersDarkMode}
-            />
-            <MyButton
-              sx={[
-                registrationStyle.button.primary,
-                {
-                  border: prefersDarkMode ? '1px solid #fff' : '1px solid #bbb',
-                },
-              ]}
-              typography={registrationStyle.buttonTypography}
-              label={'Sign Up'}
-              func={handleSignUp}
-            />
-            <AuthNavigationLink
-              question={'Already have an account?'}
-              cta={'Login here'}
-              link={'/Login'}
-              containerStyle={registrationStyle.authNavBox}
-              textStyle={registrationStyle.authNavText}
-              linkStyle={registrationStyle.authNavLink}
-            />
+                ]}
+                typography={registrationStyle.buttonTypography}
+                label={'Sign Up'}
+                func={handleSignUp}
+              />
+              <AuthNavigationLink
+                question={'Already have an account?'}
+                cta={'Login here'}
+                link={'/Login'}
+                containerStyle={registrationStyle.authNavBox}
+                textStyle={registrationStyle.authNavText}
+                linkStyle={registrationStyle.authNavLink}
+              />
+            </Box>
           </Box>
         </Box>
       </Box>
+      <Footer />
     </Box>
   )
 }
