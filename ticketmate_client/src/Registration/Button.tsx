@@ -1,22 +1,25 @@
-import React, { FC, MouseEvent } from 'react'
+import { FC, MouseEvent } from 'react'
 import { ButtonBase, Box, Typography } from '@mui/material'
-import { registrationStyle } from '../styles/registrationStyle'
 
-interface MySSOButtonProps {
+interface MyButtonProps {
   sx?: {}
+  typography?: {}
   label: string
-  icon: JSX.Element
+  icon?: JSX.Element
+  func: (e: MouseEvent) => void
 }
 
-export const MySSOButton: FC<MySSOButtonProps> = ({ sx, label, icon }) => {
-  const handleClick = (e: MouseEvent<HTMLButtonElement>) => {
-    e.preventDefault()
-    console.log('Button clicked')
-  }
+export const MyButton: FC<MyButtonProps> = ({
+  sx,
+  typography,
+  label,
+  icon,
+  func,
+}) => {
   return (
-    <ButtonBase sx={sx} onClick={handleClick}>
+    <ButtonBase sx={sx} onClick={func}>
       <Box>{icon}</Box>
-      <Typography sx={registrationStyle.ssoTypography}>{label}</Typography>
+      <Typography sx={typography}>{label}</Typography>
     </ButtonBase>
   )
 }
