@@ -1,19 +1,15 @@
 import React, { FC, ReactNode } from 'react'
-import {
-  FormControl,
-  InputAdornment,
-  InputLabel,
-  OutlinedInput,
-  TextField,
-  useMediaQuery,
-} from '@mui/material'
+import { IconButton, InputAdornment, TextField } from '@mui/material'
 
 interface TextFieldProps {
+  id: string
+  variant?: 'filled' | 'outlined' | 'standard' // may be unnecessary
   label: string
   name: string
   helperText?: string
   value: string
   onChange: (e: React.ChangeEvent<HTMLInputElement>) => void
+  iconButton?: (e: React.MouseEvent<HTMLButtonElement>) => void
   position?: 'end' | 'start'
   icon?: ReactNode
   sx: {}
@@ -24,11 +20,14 @@ interface TextFieldProps {
 }
 
 export const LabeledTextField: FC<TextFieldProps> = ({
+  id,
+  variant,
   label,
   name,
   helperText,
   value,
   onChange,
+  iconButton,
   position,
   icon,
   sx,
@@ -40,6 +39,9 @@ export const LabeledTextField: FC<TextFieldProps> = ({
   return (
     <>
       <TextField
+        id={id}
+        size={'small'}
+        variant={variant}
         label={label}
         name={name}
         helperText={helperText}
@@ -55,12 +57,18 @@ export const LabeledTextField: FC<TextFieldProps> = ({
         }}
         InputProps={{
           endAdornment: position ? (
-            <InputAdornment
-              sx={{ color: prefersDarkMode ? '#fff' : '#000' }}
-              position={position}
+            <IconButton
+              onClick={iconButton}
+              disabled={!iconButton ? true : false}
+              sx={{ cursor: iconButton ? 'pointer' : 'default' }}
             >
-              {icon}
-            </InputAdornment>
+              <InputAdornment
+                sx={{ color: prefersDarkMode ? '#fff' : '#000' }}
+                position={position}
+              >
+                {icon}
+              </InputAdornment>
+            </IconButton>
           ) : undefined,
         }}
       />
