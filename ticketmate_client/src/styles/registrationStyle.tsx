@@ -1,4 +1,5 @@
 import { StyleSheet } from '../CustomTypesAndInterfaces/types'
+import { BG_PRIMARY, DARK_PURPLE, LIGHT_PURPLE } from '../Lib/Constants'
 
 export const registrationStyle: StyleSheet = {
   authNavBox: {
@@ -14,7 +15,7 @@ export const registrationStyle: StyleSheet = {
   authNavText: { fontSize: '.85rem' },
   button: {
     primary: {
-      backgroundColor: 'blue',
+      backgroundColor: LIGHT_PURPLE,
       color: 'white',
       width: '65%',
       height: '36px',

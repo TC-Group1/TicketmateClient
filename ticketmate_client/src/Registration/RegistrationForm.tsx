@@ -17,6 +17,9 @@ import img from '../assets/registrationPlaceholderImg.png'
 import { emailRegex, passwordRegex, phoneRegex } from '../Lib/Constants'
 import { Footer } from '../Shared/Footer'
 import { VisibilityOff } from '@mui/icons-material'
+import { useMutation } from '@tanstack/react-query'
+import axios from 'axios'
+import { MySnackbar } from './SnackBar'
 
 export const RegistrationForm: FC<User> = () => {
   const [formData, setFormData] = useState({
@@ -28,6 +31,8 @@ export const RegistrationForm: FC<User> = () => {
   })
 
   const [emailHelperText, setEmailHelperText] = useState<string>('')
+  const [phoneHelperText, setPhoneHelperText] = useState<string>('')
+  const [successToast, setSuccessToast] = useState<boolean>(false)
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const handleShowPasswordButton = () => setShowPassword((show) => !show)
@@ -48,20 +53,13 @@ export const RegistrationForm: FC<User> = () => {
   const lightOrDarkmode = {
     '& .MuiOutlinedInput-root': {
       color: prefersDarkMode ? '#fff' : '#000',
-      '& .MuiOutlinedInput-notchedOutline': {
-        borderColor: prefersDarkMode ? '#fff' : '#eee',
-      },
     },
     '& .MuiInputLabel-outlined': {
       color: prefersDarkMode ? '#fff' : '#000',
     },
     '& .MuiFormHelperText-root': {
       fontSize: { xs: '.7rem', md: '.9rem' },
-      color: !errors.emailError
-        ? prefersDarkMode
-          ? 'rgba(255, 255, 255, 0.7)'
-          : 'rgba(0, 0, 0, 0.7)'
-        : 'red',
+      color: prefersDarkMode ? '#fff' : '#000',
     },
   }
 
@@ -91,19 +89,33 @@ export const RegistrationForm: FC<User> = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSignUp = (e: MouseEvent<Element>) => {
+  const handleSignUp = async (e: MouseEvent<Element>) => {
     e.preventDefault()
 
     const newErrors = { ...errors } // Copy of errors object
 
-    if (formData.email === '' || emailRegex.test(formData.email) === false) {
+    // Gives user the ability to input their phone number in whatever format they want
+    const stripSpecialChars = (number: string) => {
+      return number.replace(/[^+\d]+/g, '')
+    }
+
+    if (formData.email === '' && formData.phone === '') {
       newErrors.emailError = true
-      setEmailHelperText('Please enter a valid email address')
-    } else newErrors.emailError = false
-    if (formData.phone !== '' && phoneRegex.test(formData.phone) === false) {
-      console.log('Phone: ', phoneRegex.test(formData.phone))
       newErrors.phoneError = true
-    } else newErrors.phoneError = false
+      setPhoneHelperText('An email or phone number is required')
+    } else {
+      if (formData.email !== '' && emailRegex.test(formData.email) === false) {
+        newErrors.emailError = true
+        setEmailHelperText('Please enter a valid email address')
+      } else newErrors.emailError = false
+      if (
+        formData.phone !== '' &&
+        phoneRegex.test(stripSpecialChars(formData.phone)) === false
+      ) {
+        newErrors.phoneError = true
+        setPhoneHelperText('Please enter a valid phone number')
+      } else newErrors.phoneError = false
+    }
     if (formData.firstName === '' || formData.firstName.length < 2) {
       newErrors.firstNameError = true
     } else newErrors.firstNameError = false
@@ -112,10 +124,17 @@ export const RegistrationForm: FC<User> = () => {
       newErrors.lastNameError = true
     } else newErrors.lastNameError = false
 
-    if (formData.password === '' || !formData.password.match(passwordRegex)) {
+    if (
+      formData.password === '' ||
+      passwordRegex.test(formData.password) === false
+    ) {
       newErrors.passwordError = true
-      console.log(formData.phone.match(phoneRegex))
-    } else newErrors.passwordError = false
+      console.log(passwordRegex.test(formData.password))
+    } else {
+      console.log(passwordRegex.test(formData.password))
+      newErrors.passwordError = false
+    }
+
     setErrors(newErrors) // Sets error state to true
 
     if (
@@ -125,16 +144,47 @@ export const RegistrationForm: FC<User> = () => {
       newErrors.lastNameError === false &&
       newErrors.passwordError === false
     ) {
-      // Check if email is unique
-      // If phone number is provided check if phone is unique
-      // If email and phone are unique, create user
-      console.log('Form submitted: ', formData)
-      // If email and phone are not unique, display error
-      // throw new Error('Email or phone number already exists')
+      // Format phone number: xxx-xxx-xxxx
+      const formattedPhone = stripSpecialChars(formData.phone).replace(
+        /(\d{3})(\d{3})(\d{4})/,
+        '$1-$2-$3'
+      )
+
+      const data = {
+        ...formData,
+        phone: formattedPhone,
+      }
+
+      console.log(data, 'Data:')
+
+      // const response = await registration.mutate(data)
     } else {
       throw new Error("Form can't be submitted")
     }
   }
+
+  const registration = useMutation({
+    mutationFn: (data: User) => {
+      return axios.post('', data)
+    },
+    onSuccess: (data) => {
+      console.log(data)
+    },
+    onError: (error) => {
+      if (error.message.includes('Email is already in use')) {
+        console.error('Unable to create user, email already exists.')
+        handleError('emailError', true)
+        setEmailHelperText('Email is already in use')
+        throw new Error('Email is already in use')
+      }
+      if (error.message.includes('Phone is already in use')) {
+        console.error('Unable to create user, phone number already exists.')
+        handleError('phoneError', true)
+        setPhoneHelperText('Phone number already exists')
+        throw new Error('Phone number already exists')
+      }
+    },
+  })
 
   return (
     <Box
@@ -281,6 +331,20 @@ export const RegistrationForm: FC<User> = () => {
                   {
                     width: { xs: '100%', md: '86%' },
                     marginBottom: 1.5,
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: errors.emailError
+                        ? 'red'
+                        : prefersDarkMode
+                          ? '#fff'
+                          : '#eee',
+                    },
+                    '& .MuiFormHelperText-root': {
+                      color: !errors.emailError
+                        ? prefersDarkMode
+                          ? 'rgba(255, 255, 255, 0.7)'
+                          : 'rgba(0, 0, 0, 0.7)'
+                        : 'red',
+                    },
                   },
                 ]}
                 error={errors.emailError}
@@ -305,6 +369,20 @@ export const RegistrationForm: FC<User> = () => {
                   lightOrDarkmode,
                   {
                     width: { xs: '100%', md: '86%' },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: errors.phoneError
+                        ? 'red'
+                        : prefersDarkMode
+                          ? '#fff'
+                          : '#eee',
+                    },
+                    '& .MuiFormHelperText-root': {
+                      color: !errors.phoneError
+                        ? prefersDarkMode
+                          ? 'rgba(255, 255, 255, 0.7)'
+                          : 'rgba(0, 0, 0, 0.7)'
+                        : 'red',
+                    },
                   },
                 ]}
                 error={errors.phoneError}
@@ -312,7 +390,7 @@ export const RegistrationForm: FC<User> = () => {
                 value={formData.phone}
                 onChange={handleInputField}
                 label={'Phone Number (optional)'}
-                helperText={errors.phoneError ? 'Invalid phone number' : ''}
+                helperText={errors.phoneError ? phoneHelperText : ''}
                 icon={<PhoneIcon />}
                 position={'end'}
                 type={'text'}
@@ -336,6 +414,20 @@ export const RegistrationForm: FC<User> = () => {
                     lightOrDarkmode,
                     {
                       width: { xs: '100%', md: '48%' },
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: errors.firstNameError
+                          ? 'red'
+                          : prefersDarkMode
+                            ? '#fff'
+                            : '#eee',
+                      },
+                      '& .MuiFormHelperText-root': {
+                        color: !errors.firstNameError
+                          ? prefersDarkMode
+                            ? 'rgba(255, 255, 255, 0.7)'
+                            : 'rgba(0, 0, 0, 0.7)'
+                          : 'red',
+                      },
                     },
                   ]}
                   error={errors.firstNameError}
@@ -356,6 +448,20 @@ export const RegistrationForm: FC<User> = () => {
                     lightOrDarkmode,
                     {
                       width: { xs: '100%', md: '48%' },
+                      '& .MuiOutlinedInput-notchedOutline': {
+                        borderColor: errors.lastNameError
+                          ? 'red'
+                          : prefersDarkMode
+                            ? '#fff'
+                            : '#eee',
+                      },
+                      '& .MuiFormHelperText-root': {
+                        color: !errors.lastNameError
+                          ? prefersDarkMode
+                            ? 'rgba(255, 255, 255, 0.7)'
+                            : 'rgba(0, 0, 0, 0.7)'
+                          : 'red',
+                      },
                     },
                   ]}
                   error={errors.lastNameError}
@@ -377,6 +483,20 @@ export const RegistrationForm: FC<User> = () => {
                   lightOrDarkmode,
                   {
                     width: { xs: '100%', md: '86%' },
+                    '& .MuiOutlinedInput-notchedOutline': {
+                      borderColor: errors.passwordError
+                        ? 'red'
+                        : prefersDarkMode
+                          ? '#fff'
+                          : '#eee',
+                    },
+                    '& .MuiFormHelperText-root': {
+                      color: !errors.passwordError
+                        ? prefersDarkMode
+                          ? 'rgba(255, 255, 255, 0.7)'
+                          : 'rgba(0, 0, 0, 0.7)'
+                        : 'red',
+                    },
                   },
                 ]}
                 error={errors.passwordError}
