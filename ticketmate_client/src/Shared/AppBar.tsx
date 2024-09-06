@@ -37,9 +37,12 @@ export const ButtonAppBar = () => {
         open={open}
         onClose={handleClose}
         >
-        <MenuItem onClick={handleClose}>Profile</MenuItem>
-        <MenuItem onClick={handleClose}>My account</MenuItem>
-        <MenuItem onClick={handleClose}>Logout</MenuItem>
+        <MenuItem onClick={handleClose}>Home</MenuItem>
+        <MenuItem onClick={handleClose}>Dashboard</MenuItem>
+        <MenuItem onClick={handleClose}>Analytics</MenuItem>
+        <MenuItem onClick={handleClose}>Tickets Table</MenuItem>
+        <MenuItem onClick={handleClose}>Users Table</MenuItem>
+        <MenuItem onClick={handleClose}>Registration</MenuItem>
         </Menu>
         <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
           News
