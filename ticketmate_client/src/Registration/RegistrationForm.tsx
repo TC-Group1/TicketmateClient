@@ -1,6 +1,6 @@
 import { ChangeEvent, FC, MouseEvent, useState } from 'react'
 import { DarkMode } from '../Lib/DarkMode'
-import { User } from '../client'
+import { postUserInsertUser, User } from '../client'
 import { Box, useMediaQuery } from '@mui/material'
 import { registrationStyle } from '../styles/registrationStyle'
 import { LabeledTextField } from './LabeledTextField'
@@ -18,13 +18,12 @@ import { emailRegex, passwordRegex, phoneRegex } from '../Lib/Constants'
 import { Footer } from '../Shared/Footer'
 import { VisibilityOff } from '@mui/icons-material'
 import { useMutation } from '@tanstack/react-query'
-import axios from 'axios'
 import { MySnackbar } from './SnackBar'
 
 export const RegistrationForm: FC<User> = () => {
   const [formData, setFormData] = useState({
     email: '',
-    phone: '',
+    phoneNumber: '',
     firstName: '',
     lastName: '',
     password: '',
@@ -44,7 +43,7 @@ export const RegistrationForm: FC<User> = () => {
   // Error handling state
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({
     emailError: false,
-    phoneError: false,
+    phoneNumberError: false,
     firstNameError: false,
     lastNameError: false,
     passwordError: false,
@@ -78,7 +77,7 @@ export const RegistrationForm: FC<User> = () => {
   const handleInputField = (e: ChangeEvent<HTMLInputElement>) => {
     if (
       e.target.name === 'email' ||
-      e.target.name === 'phone' ||
+      e.target.name === 'phoneNumber' ||
       e.target.name === 'firstName' ||
       e.target.name === 'lastName' ||
       e.target.name === 'password'
@@ -99,9 +98,9 @@ export const RegistrationForm: FC<User> = () => {
       return number.replace(/[^+\d]+/g, '')
     }
 
-    if (formData.email === '' && formData.phone === '') {
+    if (formData.email === '' && formData.phoneNumber === '') {
       newErrors.emailError = true
-      newErrors.phoneError = true
+      newErrors.phoneNumberError = true
       setPhoneHelperText('An email or phone number is required')
     } else {
       if (formData.email !== '' && emailRegex.test(formData.email) === false) {
@@ -109,12 +108,12 @@ export const RegistrationForm: FC<User> = () => {
         setEmailHelperText('Please enter a valid email address')
       } else newErrors.emailError = false
       if (
-        formData.phone !== '' &&
-        phoneRegex.test(stripSpecialChars(formData.phone)) === false
+        formData.phoneNumber !== '' &&
+        phoneRegex.test(stripSpecialChars(formData.phoneNumber)) === false
       ) {
-        newErrors.phoneError = true
+        newErrors.phoneNumberError = true
         setPhoneHelperText('Please enter a valid phone number')
-      } else newErrors.phoneError = false
+      } else newErrors.phoneNumberError = false
     }
     if (formData.firstName === '' || formData.firstName.length < 2) {
       newErrors.firstNameError = true
@@ -139,20 +138,20 @@ export const RegistrationForm: FC<User> = () => {
 
     if (
       newErrors.emailError === false &&
-      newErrors.phoneError === false &&
+      newErrors.phoneNumberError === false &&
       newErrors.firstNameError === false &&
       newErrors.lastNameError === false &&
       newErrors.passwordError === false
     ) {
       // Format phone number: xxx-xxx-xxxx
-      const formattedPhone = stripSpecialChars(formData.phone).replace(
+      const formattedPhone = stripSpecialChars(formData.phoneNumber).replace(
         /(\d{3})(\d{3})(\d{4})/,
         '$1-$2-$3'
       )
 
       const data = {
         ...formData,
-        phone: formattedPhone,
+        phoneNumber: formattedPhone,
       }
 
       console.log(data, 'Data:')
@@ -163,28 +162,28 @@ export const RegistrationForm: FC<User> = () => {
     }
   }
 
-  const registration = useMutation({
-    mutationFn: (data: User) => {
-      return axios.post('', data)
-    },
-    onSuccess: (data) => {
-      console.log(data)
-    },
-    onError: (error) => {
-      if (error.message.includes('Email is already in use')) {
-        console.error('Unable to create user, email already exists.')
-        handleError('emailError', true)
-        setEmailHelperText('Email is already in use')
-        throw new Error('Email is already in use')
-      }
-      if (error.message.includes('Phone is already in use')) {
-        console.error('Unable to create user, phone number already exists.')
-        handleError('phoneError', true)
-        setPhoneHelperText('Phone number already exists')
-        throw new Error('Phone number already exists')
-      }
-    },
-  })
+  // const registration = useMutation({
+  //   mutationFn: (data: User) => {
+  //     return postUserInsertUser(data)
+  //   },
+  //   onSuccess: (data) => {
+  //     console.log(data)
+  //   },
+  //   onError: (error) => {
+  //     if (error.message.includes('Email is already in use')) {
+  //       console.error('Unable to create user, email already exists.')
+  //       handleError('emailError', true)
+  //       setEmailHelperText('Email is already in use')
+  //       throw new Error('Email is already in use')
+  //     }
+  //     if (error.message.includes('Phone is already in use')) {
+  //       console.error('Unable to create user, phone number already exists.')
+  //       handleError('phoneNumberError', true)
+  //       setPhoneHelperText('Phone number already exists')
+  //       throw new Error('Phone number already exists')
+  //     }
+  //   },
+  // })
 
   return (
     <Box
@@ -370,14 +369,14 @@ export const RegistrationForm: FC<User> = () => {
                   {
                     width: { xs: '100%', md: '86%' },
                     '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: errors.phoneError
+                      borderColor: errors.phoneNumberError
                         ? 'red'
                         : prefersDarkMode
                           ? '#fff'
                           : '#eee',
                     },
                     '& .MuiFormHelperText-root': {
-                      color: !errors.phoneError
+                      color: !errors.phoneNumberError
                         ? prefersDarkMode
                           ? 'rgba(255, 255, 255, 0.7)'
                           : 'rgba(0, 0, 0, 0.7)'
@@ -385,12 +384,12 @@ export const RegistrationForm: FC<User> = () => {
                     },
                   },
                 ]}
-                error={errors.phoneError}
-                name={'phone'}
-                value={formData.phone}
+                error={errors.phoneNumberError}
+                name={'phoneNumber'}
+                value={formData.phoneNumber}
                 onChange={handleInputField}
                 label={'Phone Number (optional)'}
-                helperText={errors.phoneError ? phoneHelperText : ''}
+                helperText={errors.phoneNumberError ? phoneHelperText : ''}
                 icon={<PhoneIcon />}
                 position={'end'}
                 type={'text'}

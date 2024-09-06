@@ -1,65 +1,50 @@
-import React, {
-  Dispatch,
-  FC,
-  Fragment,
-  SetStateAction,
-  SyntheticEvent,
-  useState,
-} from 'react'
-import Button from '@mui/material/Button'
-import Snackbar, { SnackbarCloseReason } from '@mui/material/Snackbar'
-import IconButton from '@mui/material/IconButton'
-import CloseIcon from '@mui/icons-material/Close'
+import React, { Fragment, useState } from 'react';
+import Grid from '@mui/material/Grid';
+import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
+import Snackbar, { SnackbarOrigin } from '@mui/material/Snackbar';
 
-interface MySnackbarProps {
-  setIsOpen: Dispatch<SetStateAction<boolean>>
-  isOpen: boolean
-  duration?: number
-  message: string
-  undoAction?: boolean
-  vertical: 'top' | 'bottom'
-  horizontal: 'left' | 'center' | 'right'
+interface State extends SnackbarOrigin {
+  open: boolean;
 }
 
-export const MySnackbar: FC<MySnackbarProps> = ({
-  setIsOpen,
-  isOpen,
-  duration,
-  message,
-  undoAction,
-  vertical,
-  horizontal,
-}) => {
-  const handleClose = () => {
-    setIsOpen(false)
-  }
+export const MySnackbar = () => {
+  const [state, setState] = useState<State>({
+    open: false,
+    vertical: 'top',
+    horizontal: 'center',
+  });
+  const { vertical, horizontal, open } = state;
 
-  const action = (
-    <Fragment>
-      {undoAction ? (
-        <Button color="secondary" size="small" onClick={handleClose}>
-          UNDO
-        </Button>
-      ) : null}
-      <IconButton
-        size="small"
-        aria-label="close"
-        color="inherit"
-        onClick={handleClose}
-      >
-        <CloseIcon fontSize="small" />
-      </IconButton>
-    </Fragment>
-  )
+  const handleClick = (newState: SnackbarOrigin) => () => {
+    setState({ ...newState, open: true });
+  };
+
+  const handleClose = () => {
+    setState({ ...state, open: false });
+  };
+
+  const buttons = (
+   
+        <Grid item xs={6} sx={{ textAlign: 'right' }}>
+          <Button onClick={handleClick({ vertical: 'top', horizontal: 'right' })}>
+            Top-Right
+          </Button>
+        </Grid>
+        
+      
+  );
 
   return (
-    <Snackbar
-      anchorOrigin={{ vertical, horizontal }}
-      open={isOpen}
-      autoHideDuration={duration}
-      onClose={handleClose}
-      message={message}
-      action={action}
-    />
-  )
+    <Box sx={{ width: 500 }}>
+      {buttons}
+      <Snackbar
+        anchorOrigin={{ vertical, horizontal }}
+        open={open}
+        onClose={handleClose}
+        message="I love snacks"
+        key={vertical + horizontal}
+      />
+    </Box>
+  );
 }
