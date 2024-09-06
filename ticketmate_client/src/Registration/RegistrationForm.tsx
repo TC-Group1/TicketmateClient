@@ -13,12 +13,14 @@ import MicrosoftIcon from '@mui/icons-material/Microsoft'
 import EmailIcon from '@mui/icons-material/Email'
 import PhoneIcon from '@mui/icons-material/Phone'
 import VisibilityIcon from '@mui/icons-material/Visibility'
+import InfoIcon from '@mui/icons-material/Info'
 import img from '../assets/registrationPlaceholderImg.png'
 import { emailRegex, passwordRegex, phoneRegex } from '../Lib/Constants'
 import { Footer } from '../Shared/Footer'
 import { VisibilityOff } from '@mui/icons-material'
 import { useMutation } from '@tanstack/react-query'
 import { MySnackbar } from './SnackBar'
+import { MyToolTip } from './ToolTip'
 
 export const RegistrationForm: FC<User> = () => {
   const [formData, setFormData] = useState({
@@ -69,9 +71,8 @@ export const RegistrationForm: FC<User> = () => {
     })
   }
 
-  const handleSSOClick = (e: MouseEvent<Element>) => {
-    e.preventDefault()
-    console.log('Go to google SSO')
+  const handleSSOClick = (endpoint: string) => {
+    console.log(`Redirecting to ${endpoint}`)
   }
 
   const handleInputField = (e: ChangeEvent<HTMLInputElement>) => {
@@ -88,9 +89,7 @@ export const RegistrationForm: FC<User> = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value })
   }
 
-  const handleSignUp = async (e: MouseEvent<Element>) => {
-    e.preventDefault()
-
+  const handleSignUp = async () => {
     const newErrors = { ...errors } // Copy of errors object
 
     // Gives user the ability to input their phone number in whatever format they want
@@ -128,9 +127,7 @@ export const RegistrationForm: FC<User> = () => {
       passwordRegex.test(formData.password) === false
     ) {
       newErrors.passwordError = true
-      console.log(passwordRegex.test(formData.password))
     } else {
-      console.log(passwordRegex.test(formData.password))
       newErrors.passwordError = false
     }
 
@@ -256,7 +253,9 @@ export const RegistrationForm: FC<User> = () => {
                   flexDirection: { xs: 'column', lg: 'row' },
                   justifyContent: { xs: 'space-between', lg: 'space-evenly' },
                   alignItems: { xs: 'center', lg: 'center' },
-                  width: { xs: '108%', lg: '95%' },
+                  //width: { xs: '108%', lg: '95%' },
+                  width: { xs: '95%', lg: '92%' },
+                  maxWidth: '500px',
                   marginBottom: 0.5,
                 }}
               >
@@ -267,7 +266,7 @@ export const RegistrationForm: FC<User> = () => {
                       border: prefersDarkMode
                         ? '1px solid #fff'
                         : '1px solid #bbb',
-                      width: { xs: 152, md: '148pt' },
+                      width: { xs: '230px', lg: '45%' },
                       marginBottom: { xs: 1, lg: 0 },
                     },
                   ]}
@@ -278,7 +277,7 @@ export const RegistrationForm: FC<User> = () => {
                   // Should the label read 'Sign up with Google'?
                   label={'Login with Google'}
                   icon={<GoogleIcon fontSize={'small'} />}
-                  func={handleSSOClick}
+                  func={() => handleSSOClick('google')}
                 />
                 <MyButton
                   sx={[
@@ -287,7 +286,7 @@ export const RegistrationForm: FC<User> = () => {
                       border: prefersDarkMode
                         ? '1px solid #fff'
                         : '1px solid #bbb',
-                      width: { xs: 150, md: '148pt' },
+                      width: { xs: '230px', lg: '45%' },
                     },
                   ]}
                   typography={[
@@ -297,7 +296,7 @@ export const RegistrationForm: FC<User> = () => {
                   // Should the label read 'Sign up with Google'?
                   label={'Login with Microsoft'}
                   icon={<MicrosoftIcon fontSize={'small'} />}
-                  func={handleSSOClick}
+                  func={() => handleSSOClick('microsoft')}
                 />
               </Box>
             </Box>
@@ -306,8 +305,7 @@ export const RegistrationForm: FC<User> = () => {
                 sx={[
                   registrationStyle.divider,
                   {
-                    color: prefersDarkMode ? '#aaa' : '#eee',
-                    '& .MuiDivider-root': {},
+                    color: prefersDarkMode ? '#aaa' : '#333',
                   },
                 ]}
                 text={'or'}
@@ -335,7 +333,7 @@ export const RegistrationForm: FC<User> = () => {
                         ? 'red'
                         : prefersDarkMode
                           ? '#fff'
-                          : '#eee',
+                          : '#c9c9c9',
                     },
                     '& .MuiFormHelperText-root': {
                       color: !errors.emailError
@@ -373,7 +371,7 @@ export const RegistrationForm: FC<User> = () => {
                         ? 'red'
                         : prefersDarkMode
                           ? '#fff'
-                          : '#eee',
+                          : '#c9c9c9',
                     },
                     '& .MuiFormHelperText-root': {
                       color: !errors.phoneNumberError
@@ -403,6 +401,7 @@ export const RegistrationForm: FC<User> = () => {
                     flexDirection: { xs: 'column', md: 'row' },
                     justifyContent: { xs: 'center', md: 'space-between' },
                     padding: 0,
+                    maxWidth: '500px',
                   },
                 ]}
               >
@@ -418,7 +417,7 @@ export const RegistrationForm: FC<User> = () => {
                           ? 'red'
                           : prefersDarkMode
                             ? '#fff'
-                            : '#eee',
+                            : '#c9c9c9',
                       },
                       '& .MuiFormHelperText-root': {
                         color: !errors.firstNameError
@@ -452,7 +451,7 @@ export const RegistrationForm: FC<User> = () => {
                           ? 'red'
                           : prefersDarkMode
                             ? '#fff'
-                            : '#eee',
+                            : '#c9c9c9',
                       },
                       '& .MuiFormHelperText-root': {
                         color: !errors.lastNameError
@@ -475,54 +474,84 @@ export const RegistrationForm: FC<User> = () => {
                   prefersDarkMode={prefersDarkMode}
                 />
               </Box>
-              <LabeledTextField
-                id={'password-registration'}
-                sx={[
-                  registrationStyle.textField,
-                  lightOrDarkmode,
-                  {
-                    width: { xs: '100%', md: '86%' },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: errors.passwordError
-                        ? 'red'
-                        : prefersDarkMode
-                          ? '#fff'
-                          : '#eee',
-                    },
-                    '& .MuiFormHelperText-root': {
-                      color: !errors.passwordError
-                        ? prefersDarkMode
-                          ? 'rgba(255, 255, 255, 0.7)'
-                          : 'rgba(0, 0, 0, 0.7)'
-                        : 'red',
-                    },
-                  },
-                ]}
-                error={errors.passwordError}
-                helperText={
-                  errors.passwordError
-                    ? 'Password does not meet requirements'
-                    : ''
-                }
-                name={'password'}
-                label={'Password'}
-                value={formData.password}
-                onChange={handleInputField}
-                type={showPassword ? 'text' : 'password'}
-                icon={showPassword ? <VisibilityOff /> : <VisibilityIcon />}
-                iconButton={handleShowPasswordButton}
-                position={'end'}
-                prefersDarkMode={prefersDarkMode}
-              />
+              <Box
+                sx={{
+                  display: 'flex',
+                  width: { xs: '100%', md: '86%' },
+                  maxWidth: '500px',
+                }}
+              >
+                <Box sx={{ width: '95%' }}>
+                  <LabeledTextField
+                    id={'password-registration'}
+                    sx={[
+                      registrationStyle.textField,
+                      lightOrDarkmode,
+                      {
+                        width: '98%',
+                        '& .MuiOutlinedInput-notchedOutline': {
+                          borderColor: errors.passwordError
+                            ? 'red'
+                            : prefersDarkMode
+                              ? '#fff'
+                              : '#c9c9c9',
+                        },
+                        '& .MuiFormHelperText-root': {
+                          color: !errors.passwordError
+                            ? prefersDarkMode
+                              ? 'rgba(255, 255, 255, 0.7)'
+                              : 'rgba(0, 0, 0, 0.7)'
+                            : 'red',
+                        },
+                      },
+                    ]}
+                    error={errors.passwordError}
+                    helperText={
+                      errors.passwordError
+                        ? 'Password does not meet requirements'
+                        : ''
+                    }
+                    name={'password'}
+                    label={'Password'}
+                    value={formData.password}
+                    onChange={handleInputField}
+                    type={showPassword ? 'text' : 'password'}
+                    icon={showPassword ? <VisibilityOff /> : <VisibilityIcon />}
+                    iconButton={handleShowPasswordButton}
+                    position={'end'}
+                    prefersDarkMode={prefersDarkMode}
+                  />
+                </Box>
+                <Box
+                  sx={{
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
+                    width: '5%',
+                    marginBottom: 2.2,
+                  }}
+                >
+                  <MyToolTip
+                    placement={'top'}
+                    title={
+                      <>
+                        At least one uppercase letter
+                        <br />
+                        At least one lowercase letter
+                        <br />
+                        At least one digit
+                        <br />
+                        At least one special character among #?!@$%^&*-
+                        <br />A minimum length of 8 characters
+                      </>
+                    }
+                    icon={<InfoIcon />}
+                    prefersDarkMode={prefersDarkMode}
+                  />
+                </Box>
+              </Box>
               <MyButton
-                sx={[
-                  registrationStyle.button.primary,
-                  {
-                    border: prefersDarkMode
-                      ? '1px solid #fff'
-                      : '1px solid #bbb',
-                  },
-                ]}
+                sx={[registrationStyle.button.primary]}
                 typography={registrationStyle.buttonTypography}
                 label={'Sign Up'}
                 func={handleSignUp}

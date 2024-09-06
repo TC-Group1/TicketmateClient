@@ -5,8 +5,8 @@ export const registrationStyle: StyleSheet = {
   authNavBox: {
     display: 'flex',
     width: '85%',
-    justifyContent: 'flex-end',
-    marginTop: 1,
+    justifyContent: 'center',
+    marginTop: 2,
   },
   authNavLink: {
     fontSize: '.85rem',

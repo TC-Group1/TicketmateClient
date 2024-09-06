@@ -6,7 +6,7 @@ interface MyButtonProps {
   typography?: {}
   label: string
   icon?: JSX.Element
-  func: (e: MouseEvent) => void
+  func: () => void
 }
 
 export const MyButton: FC<MyButtonProps> = ({
