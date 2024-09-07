@@ -33,7 +33,8 @@ export const RegistrationForm: FC<User> = () => {
 
   const [emailHelperText, setEmailHelperText] = useState<string>('')
   const [phoneHelperText, setPhoneHelperText] = useState<string>('')
-  const [successToast, setSuccessToast] = useState<boolean>(false)
+
+  const [openTooltip, setOpenTooltip] = useState<boolean>(false)
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const handleShowPasswordButton = () => setShowPassword((show) => !show)
@@ -207,7 +208,11 @@ export const RegistrationForm: FC<User> = () => {
             <img
               src={img}
               alt={'Abstract TicketMate Image'}
-              style={{ objectFit: 'cover', width: '100%', height: '100%' }}
+              style={{
+                objectFit: 'cover',
+                width: '100%',
+                height: '100%',
+              }}
             />
           </Box>
         ) : null}
@@ -226,6 +231,7 @@ export const RegistrationForm: FC<User> = () => {
             ]}
           >
             <Box
+              id="registration-main-header"
               sx={[
                 registrationStyle.ssoBox,
                 {
@@ -248,6 +254,7 @@ export const RegistrationForm: FC<User> = () => {
                 ]}
               />
               <Box
+                id="registration-sso-buttons"
                 sx={{
                   display: 'flex',
                   flexDirection: { xs: 'column', lg: 'row' },
@@ -272,7 +279,7 @@ export const RegistrationForm: FC<User> = () => {
                   ]}
                   typography={[
                     registrationStyle.ssoTypography,
-                    { fontSize: { xs: '.75rem', sm: '1rem' } },
+                    { fontSize: { xs: '1rem' } },
                   ]}
                   // Should the label read 'Sign up with Google'?
                   label={'Login with Google'}
@@ -291,7 +298,7 @@ export const RegistrationForm: FC<User> = () => {
                   ]}
                   typography={[
                     registrationStyle.ssoTypography,
-                    { fontSize: { xs: '.75rem', sm: '1rem' } },
+                    { fontSize: { xs: '1rem' } },
                   ]}
                   // Should the label read 'Sign up with Google'?
                   label={'Login with Microsoft'}
@@ -300,7 +307,7 @@ export const RegistrationForm: FC<User> = () => {
                 />
               </Box>
             </Box>
-            <Box sx={{ width: '100%' }}>
+            <Box id="registration-divider" sx={{ width: '100%' }}>
               <MyDivider
                 sx={[
                   registrationStyle.divider,
@@ -312,6 +319,7 @@ export const RegistrationForm: FC<User> = () => {
               />
             </Box>
             <Box
+              id="registration-form"
               sx={[
                 registrationStyle.form,
                 {
@@ -394,6 +402,7 @@ export const RegistrationForm: FC<User> = () => {
                 prefersDarkMode={prefersDarkMode}
               />
               <Box
+                id="registration-name-fields"
                 sx={[
                   registrationStyle.form,
                   {
@@ -475,13 +484,21 @@ export const RegistrationForm: FC<User> = () => {
                 />
               </Box>
               <Box
+                id="registration-password-field-div"
                 sx={{
                   display: 'flex',
                   width: { xs: '100%', md: '86%' },
                   maxWidth: '500px',
+                  justifyContent: { xs: 'space-between', md: '' },
                 }}
               >
-                <Box sx={{ width: '95%' }}>
+                <Box
+                  id="registration-password-field"
+                  sx={{
+                    width: { xs: '92%', sm: '95%' },
+                    display: 'flex',
+                  }}
+                >
                   <LabeledTextField
                     id={'password-registration'}
                     sx={[
@@ -523,6 +540,7 @@ export const RegistrationForm: FC<User> = () => {
                   />
                 </Box>
                 <Box
+                  id="registration-password-tooltip"
                   sx={{
                     display: 'flex',
                     justifyContent: 'center',
@@ -532,7 +550,11 @@ export const RegistrationForm: FC<User> = () => {
                   }}
                 >
                   <MyToolTip
-                    placement={'top'}
+                    handleClose={() => setOpenTooltip(false)}
+                    handleOpen={() => setOpenTooltip(true)}
+                    type={'clickable'}
+                    open={openTooltip}
+                    placement={'top-start'}
                     title={
                       <>
                         At least one uppercase letter
