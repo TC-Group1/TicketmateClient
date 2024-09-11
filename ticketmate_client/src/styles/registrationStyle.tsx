@@ -1,5 +1,5 @@
 import { StyleSheet } from '../CustomTypesAndInterfaces/types'
-import { BG_PRIMARY, DARK_PURPLE, LIGHT_PURPLE } from '../Lib/Constants'
+import { LIGHT_PURPLE } from '../Lib/Constants'
 
 export const registrationStyle: StyleSheet = {
   authNavBox: {

@@ -1,4 +1,4 @@
-import { FC, MouseEvent } from 'react'
+import { FC } from 'react'
 import { ButtonBase, Box, Typography } from '@mui/material'
 
 interface MyButtonProps {

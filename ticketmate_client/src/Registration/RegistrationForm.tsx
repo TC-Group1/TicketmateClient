@@ -1,6 +1,6 @@
-import { ChangeEvent, FC, MouseEvent, useState } from 'react'
+import { ChangeEvent, FC, useState } from 'react'
 import { DarkMode } from '../Lib/DarkMode'
-import { postUserInsertUser, User } from '../client'
+import { PostUserInsertUserData, User } from '../client'
 import { Box, useMediaQuery } from '@mui/material'
 import { registrationStyle } from '../styles/registrationStyle'
 import { LabeledTextField } from './LabeledTextField'
@@ -18,22 +18,24 @@ import img from '../assets/registrationPlaceholderImg.png'
 import { emailRegex, passwordRegex, phoneRegex } from '../Lib/Constants'
 import { Footer } from '../Shared/Footer'
 import { VisibilityOff } from '@mui/icons-material'
-import { useMutation } from '@tanstack/react-query'
-import { MySnackbar } from './SnackBar'
 import { MyToolTip } from './ToolTip'
 
 export const RegistrationForm: FC<User> = () => {
-  const [formData, setFormData] = useState({
-    email: '',
-    phoneNumber: '',
-    firstName: '',
-    lastName: '',
-    password: '',
+  const [formData, setFormData] = useState<PostUserInsertUserData>({
+    // Query is required for the mutation
+    query: {
+      Avatar: '',
+      Email: '',
+      PhoneNumber: '',
+      FirstName: '',
+      LastName: '',
+      PasswordHash: '',
+    }
   })
 
   const [emailHelperText, setEmailHelperText] = useState<string>('')
   const [phoneHelperText, setPhoneHelperText] = useState<string>('')
-  const [successToast, setSuccessToast] = useState<boolean>(false)
+  // const [successToast, setSuccessToast] = useState<boolean>(false)
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const handleShowPasswordButton = () => setShowPassword((show) => !show)
@@ -96,35 +98,35 @@ export const RegistrationForm: FC<User> = () => {
     const stripSpecialChars = (number: string) => {
       return number.replace(/[^+\d]+/g, '')
     }
-
-    if (formData.email === '' && formData.phoneNumber === '') {
+    //will have to update accessors to match the new schema that aligns to the request object -- example: formData.query.Email instead of formData.email
+    if (formData.query?.Email === '' && formData.query?.PhoneNumber === '') {
       newErrors.emailError = true
       newErrors.phoneNumberError = true
       setPhoneHelperText('An email or phone number is required')
     } else {
-      if (formData.email !== '' && emailRegex.test(formData.email) === false) {
+      if (formData.query?.Email !== '' && emailRegex.test(formData.query?.Email ?? '') === false) {
         newErrors.emailError = true
         setEmailHelperText('Please enter a valid email address')
       } else newErrors.emailError = false
       if (
-        formData.phoneNumber !== '' &&
-        phoneRegex.test(stripSpecialChars(formData.phoneNumber)) === false
+        formData.query?.PhoneNumber !== '' &&
+        phoneRegex.test(stripSpecialChars(formData.query?.PhoneNumber ?? '')) === false
       ) {
         newErrors.phoneNumberError = true
         setPhoneHelperText('Please enter a valid phone number')
       } else newErrors.phoneNumberError = false
     }
-    if (formData.firstName === '' || formData.firstName.length < 2) {
+    if (formData.query?.FirstName === undefined || formData.query?.FirstName === '' || formData.query?.FirstName?.length < 2) {
       newErrors.firstNameError = true
     } else newErrors.firstNameError = false
 
-    if (formData.lastName === '' || formData.lastName.length < 2) {
+    if (formData.query?.LastName === undefined ||formData.query?.LastName === '' || formData.query?.LastName.length < 2) {
       newErrors.lastNameError = true
     } else newErrors.lastNameError = false
 
     if (
-      formData.password === '' ||
-      passwordRegex.test(formData.password) === false
+      formData.query?.PasswordHash === '' ||
+      passwordRegex.test(formData.query?.PasswordHash ?? '') === false
     ) {
       newErrors.passwordError = true
     } else {
@@ -140,8 +142,8 @@ export const RegistrationForm: FC<User> = () => {
       newErrors.lastNameError === false &&
       newErrors.passwordError === false
     ) {
-      // Format phone number: xxx-xxx-xxxx
-      const formattedPhone = stripSpecialChars(formData.phoneNumber).replace(
+      // Format phone number: xxx-xxx-xxxx    //updated and corrected error state where phone number is null/undefined
+      const formattedPhone = stripSpecialChars(formData.query?.PhoneNumber ?? '').replace(
         /(\d{3})(\d{3})(\d{4})/,
         '$1-$2-$3'
       )
@@ -347,7 +349,7 @@ export const RegistrationForm: FC<User> = () => {
                 error={errors.emailError}
                 label={'Email'}
                 name={'email'}
-                value={formData.email}
+                value={formData.query?.Email ?? ''}
                 onChange={handleInputField}
                 helperText={
                   errors.emailError
@@ -384,7 +386,7 @@ export const RegistrationForm: FC<User> = () => {
                 ]}
                 error={errors.phoneNumberError}
                 name={'phoneNumber'}
-                value={formData.phoneNumber}
+                value={formData.query?.PhoneNumber ?? ''}
                 onChange={handleInputField}
                 label={'Phone Number (optional)'}
                 helperText={errors.phoneNumberError ? phoneHelperText : ''}
@@ -434,7 +436,7 @@ export const RegistrationForm: FC<User> = () => {
                   helperText={
                     errors.firstNameError ? 'First name is required' : ''
                   }
-                  value={formData.firstName}
+                  value={formData.query?.FirstName ?? ''}
                   onChange={handleInputField}
                   type={'text'}
                   prefersDarkMode={prefersDarkMode}
@@ -468,7 +470,7 @@ export const RegistrationForm: FC<User> = () => {
                   helperText={
                     errors.lastNameError ? 'Last name is required' : ''
                   }
-                  value={formData.lastName}
+                  value={formData.query?.LastName ?? ''}
                   onChange={handleInputField}
                   type={'text'}
                   prefersDarkMode={prefersDarkMode}
@@ -513,7 +515,7 @@ export const RegistrationForm: FC<User> = () => {
                     }
                     name={'password'}
                     label={'Password'}
-                    value={formData.password}
+                    value={formData.query?.PasswordHash ?? ''}
                     onChange={handleInputField}
                     type={showPassword ? 'text' : 'password'}
                     icon={showPassword ? <VisibilityOff /> : <VisibilityIcon />}
