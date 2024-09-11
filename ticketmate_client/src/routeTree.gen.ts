@@ -15,7 +15,6 @@ import { Route as WithButtonAppBarImport } from './routes/_with-ButtonAppBar'
 import { Route as IndexImport } from './routes/index'
 import { Route as RegistrationIndexImport } from './routes/Registration/index'
 import { Route as LoginIndexImport } from './routes/Login/index'
-import { Route as RegistrationRegistrationFormImport } from './routes/Registration/RegistrationForm'
 import { Route as LoginLoginPageImport } from './routes/Login/LoginPage'
 import { Route as LoginLoginFormImport } from './routes/Login/LoginForm'
 import { Route as WithButtonAppBarDashboardIndexImport } from './routes/_with-ButtonAppBar/Dashboard/index'
@@ -44,12 +43,6 @@ const LoginIndexRoute = LoginIndexImport.update({
   path: '/Login/',
   getParentRoute: () => rootRoute,
 } as any)
-
-const RegistrationRegistrationFormRoute =
-  RegistrationRegistrationFormImport.update({
-    path: '/Registration/RegistrationForm',
-    getParentRoute: () => rootRoute,
-  } as any)
 
 const LoginLoginPageRoute = LoginLoginPageImport.update({
   path: '/Login/LoginPage',
@@ -117,13 +110,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLoginPageImport
       parentRoute: typeof rootRoute
     }
-    '/Registration/RegistrationForm': {
-      id: '/Registration/RegistrationForm'
-      path: '/Registration/RegistrationForm'
-      fullPath: '/Registration/RegistrationForm'
-      preLoaderRoute: typeof RegistrationRegistrationFormImport
-      parentRoute: typeof rootRoute
-    }
     '/Login/': {
       id: '/Login/'
       path: '/Login'
@@ -181,7 +167,6 @@ export const routeTree = rootRoute.addChildren({
   }),
   LoginLoginFormRoute,
   LoginLoginPageRoute,
-  RegistrationRegistrationFormRoute,
   LoginIndexRoute,
   RegistrationIndexRoute,
 })
@@ -198,7 +183,6 @@ export const routeTree = rootRoute.addChildren({
         "/_with-ButtonAppBar",
         "/Login/LoginForm",
         "/Login/LoginPage",
-        "/Registration/RegistrationForm",
         "/Login/",
         "/Registration/"
       ]
@@ -220,9 +204,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/Login/LoginPage": {
       "filePath": "Login/LoginPage.tsx"
-    },
-    "/Registration/RegistrationForm": {
-      "filePath": "Registration/RegistrationForm.tsx"
     },
     "/Login/": {
       "filePath": "Login/index.tsx"

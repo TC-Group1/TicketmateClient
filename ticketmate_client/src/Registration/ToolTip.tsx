@@ -1,5 +1,7 @@
-import { FC, ReactNode } from 'react'
+import 
+ { FC, ReactNode } from 'react'
 import { IconButton, Tooltip } from '@mui/material'
+
 
 interface ToolTipProps {
   icon: ReactNode
@@ -7,6 +9,7 @@ interface ToolTipProps {
   placement: 'top' | 'bottom' | 'left' | 'right'
   sx?: {}
   prefersDarkMode: boolean
+
 }
 
 export const MyToolTip: FC<ToolTipProps> = ({
@@ -14,6 +17,7 @@ export const MyToolTip: FC<ToolTipProps> = ({
   title,
   placement,
   prefersDarkMode,
+ 
 }) => {
   return (
     <Tooltip title={title} placement={placement}>
