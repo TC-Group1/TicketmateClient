@@ -1,0 +1,226 @@
+{
+  "projects": [
+    {
+      "name": "Project 1",
+      "guid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+      "users": [
+        {
+          "guid": "eb9249e4-ba0f-4715-bba8-770e6a5b39d2",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "John",
+          "lastName": "Doe",
+          "email": "john.doe@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        },
+        {
+          "guid": "04d9bd06-62de-4a74-a1ee-feea62223b42",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "Jane",
+          "lastName": "Doe",
+          "email": "jane.doe@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        },
+        {
+          "guid": "0abc9e13-a26d-4bb5-8bf7-5b7c53557603",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "Susan",
+          "lastName": "Anthony",
+          "email": "susan.anthony@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        },
+        {
+          "guid": "f3b1767b-9ee6-4f90-b716-4d9ec76a1412",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "James",
+          "lastName": "Whitaker",
+          "email": "james.whitaker@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        }
+      ],
+      "sprints": [
+        {
+          "guid": "e5794884-8d79-4016-b776-afff526b9b89",
+          "name": "Sprint 1",
+          "startDate": "",
+          "endDate": ""
+        }
+      ],
+      "tickets": [
+        {
+          "createdByUserGuid": "eb9249e4-ba0f-4715-bba8-770e6a5b39d2",
+          "description": "description",
+          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "priorityId": 1,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 1,
+          "title": "Ticket 1",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "1726517364000",
+          "assignedTo": ["f3b1767b-9ee6-4f90-b716-4d9ec76a1412"]
+        },
+        {
+          "createdByUserGuid": "04d9bd06-62de-4a74-a1ee-feea62223b42",
+          "description": "description",
+          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "priorityId": 2,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 2,
+          "title": "Ticket 2",
+          "sprintGuid": null,
+          "createdOn": "1726517364000",
+          "modifiedOn": "",
+          "assignedTo": ["eb9249e4-ba0f-4715-bba8-770e6a5b39d2"]
+        },
+        {
+          "createdByUserGuid": "04d9bd06-62de-4a74-a1ee-feea62223b42",
+          "description": "description",
+          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "priorityId": 2,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 2,
+          "title": "Ticket 3",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "1726517364000",
+          "assignedTo": ["f3b1767b-9ee6-4f90-b716-4d9ec76a1412"]
+        },
+        {
+          "createdByUserGuid": "f3b1767b-9ee6-4f90-b716-4d9ec76a1412",
+          "description": "description",
+          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "priorityId": 3,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 3,
+          "title": "Ticket 4",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "",
+          "assignedTo": ["f3b1767b-9ee6-4f90-b716-4d9ec76a1412"]
+        }
+      ]
+    },
+    {
+      "name": "Project 2",
+      "guid": "d8d212e0-4605-4ea7-8e87-d4e753c36456",
+      "users": [
+        {
+          "guid": "a8f0306b-b207-47b7-9969-c9ae36211546",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "John",
+          "lastName": "Brown",
+          "email": "john.brown@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        },
+        {
+          "guid": "fcbe23e9-a34f-49d0-adf8-a5a199ad79ca",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "Jane",
+          "lastName": "Austen",
+          "email": "jane.austen@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        },
+        {
+          "guid": "745765b4-71dc-4b51-831a-66450fe2e4f1",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "Susan",
+          "lastName": "Sontag",
+          "email": "susan.sontag@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        },
+        {
+          "guid": "f8e4b6f1-e805-49e6-b4b4-3d6bb9ba5659",
+          "phoneNumber": "(xxx)xxx-xxxx",
+          "firstName": "James",
+          "lastName": "Madison",
+          "email": "james.madison@fakeprovider.com",
+          "avatar": null,
+          "passwordHash": "hashHashHash",
+          "isActive": true
+        }
+      ],
+      "sprints": [
+        {
+          "guid": "0d648739-9ea2-4181-a5ac-53e73beba6fd",
+          "name": "Sprint 1",
+          "startDate": "",
+          "endDate": ""
+        },
+        {
+          "guid": "06f2e9d0-ced8-4835-a34f-a90b5f2405a1",
+          "name": "Sprint 2",
+          "startDate": "",
+          "endDate": ""
+        }
+      ],
+      "tickets": [
+        {
+          "createdByUserGuid": "a8f0306b-b207-47b7-9969-c9ae36211546",
+          "description": "description",
+          "guid": "6a436b02-3d62-47fb-8a53-3a39c12376a3",
+          "priorityId": 1,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 1,
+          "title": "Ticket 1",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "",
+          "assignedTo": ["a8f0306b-b207-47b7-9969-c9ae36211546"]
+        },
+        {
+          "createdByUserGuid": "a8f0306b-b207-47b7-9969-c9ae36211546",
+          "description": "description",
+          "guid": "0adaa4a2-5c95-4237-9b40-dae3af409934",
+          "priorityId": 2,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 2,
+          "title": "Ticket 2",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "",
+          "assignedTo": ["a8f0306b-b207-47b7-9969-c9ae36211546"]
+        },
+        {
+          "createdByUserGuid": "fcbe23e9-a34f-49d0-adf8-a5a199ad79ca",
+          "description": "description",
+          "guid": "3d8b9c9d-ecd4-401e-bb3e-b0b742612f98",
+          "priorityId": 2,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 2,
+          "title": "Ticket 3",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "1726517364000",
+          "assignedTo": ["fcbe23e9-a34f-49d0-adf8-a5a199ad79ca"]
+        },
+        {
+          "createdByUserGuid": "fcbe23e9-a34f-49d0-adf8-a5a199ad79ca",
+          "description": "description",
+          "guid": "6578150d-9e38-42c4-9f8e-3f8b7ef49f5c",
+          "priorityId": 3,
+          "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
+          "statusId": 3,
+          "title": "Ticket 4",
+          "sprintGuid": null,
+          "createdOn": "1725163200000",
+          "modifiedOn": "1726517364000",
+          "assignedTo": ["fcbe23e9-a34f-49d0-adf8-a5a199ad79ca"]
+        }
+      ]
+    }
+  ]
+}
