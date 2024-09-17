@@ -3,7 +3,7 @@ import { Typography } from '@mui/material'
 
 interface TypographyProps {
   text: string
-  level?:
+  variant?:
     | 'h1'
     | 'h2'
     | 'h3'
@@ -20,9 +20,9 @@ interface TypographyProps {
     | undefined
   sx?: {}
 }
-export const MyHeadings: FC<TypographyProps> = ({ text, level, sx }) => {
+export const MyHeadings: FC<TypographyProps> = ({ text, variant, sx }) => {
   return (
-    <Typography sx={sx} variant={level}>
+    <Typography sx={sx} variant={variant}>
       {text}
     </Typography>
   )

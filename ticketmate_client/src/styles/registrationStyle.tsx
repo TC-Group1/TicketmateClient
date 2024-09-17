@@ -16,13 +16,13 @@ export const registrationStyle: StyleSheet = {
   button: {
     primary: {
       backgroundColor: LIGHT_PURPLE,
+      borderColor: LIGHT_PURPLE,
       color: 'white',
-      width: '65%',
+      width: '80%',
       height: '36px',
       borderRadius: 1,
       padding: '8px 0',
     },
-    // secondary: {},
   },
   buttonTypography: {
     fontSize: '1.25rem',
@@ -51,8 +51,6 @@ export const registrationStyle: StyleSheet = {
   h1: {
     marginBottom: 1,
   },
-  h2: { marginBottom: 2, color: 'gray' },
-  h3: {},
   imageBox: {
     width: '42%',
     height: 'inherit',
@@ -77,9 +75,6 @@ export const registrationStyle: StyleSheet = {
   ssoTypography: { marginLeft: 1 },
   textField: {
     maxWidth: '500px',
-    marginBottom: 2.2,
   },
   textFieldBox: { width: '100%', borderRadius: 1 },
-  smallIcon: {},
-  largeIcon: {},
 }

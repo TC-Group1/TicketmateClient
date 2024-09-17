@@ -16,10 +16,8 @@ import VisibilityIcon from '@mui/icons-material/Visibility'
 import InfoIcon from '@mui/icons-material/Info'
 import img from '../assets/registrationPlaceholderImg.png'
 import { emailRegex, passwordRegex, phoneRegex } from '../Lib/Constants'
-import { Footer } from '../Shared/Footer'
 import { VisibilityOff } from '@mui/icons-material'
 import { MyToolTip } from './ToolTip'
-
 
 export const RegistrationForm: FC<User> = () => {
   const [formData, setFormData] = useState<PostUserInsertUserData>({
@@ -31,15 +29,11 @@ export const RegistrationForm: FC<User> = () => {
       FirstName: '',
       LastName: '',
       PasswordHash: '',
-    }
+    },
   })
 
   const [emailHelperText, setEmailHelperText] = useState<string>('')
   const [phoneHelperText, setPhoneHelperText] = useState<string>('')
-
-  // const [successToast, setSuccessToast] = useState<boolean>(false)
-
-  const [openTooltip, setOpenTooltip] = useState<boolean>(false)
 
   const [showPassword, setShowPassword] = useState<boolean>(false)
   const handleShowPasswordButton = () => setShowPassword((show) => !show)
@@ -50,25 +44,12 @@ export const RegistrationForm: FC<User> = () => {
 
   // Error handling state
   const [errors, setErrors] = useState<{ [key: string]: boolean }>({
-    emailError: false,
-    phoneNumberError: false,
-    firstNameError: false,
-    lastNameError: false,
-    passwordError: false,
+    EmailError: false,
+    PhoneNumberError: false,
+    FirstNameError: false,
+    LastNameError: false,
+    PasswordHashError: false,
   })
-
-  const lightOrDarkmode = {
-    '& .MuiOutlinedInput-root': {
-      color: prefersDarkMode ? '#fff' : '#000',
-    },
-    '& .MuiInputLabel-outlined': {
-      color: prefersDarkMode ? '#fff' : '#000',
-    },
-    '& .MuiFormHelperText-root': {
-      fontSize: { xs: '.7rem', md: '.9rem' },
-      color: prefersDarkMode ? '#fff' : '#000',
-    },
-  }
 
   const handleError = (fieldName: string, value: boolean) => {
     setErrors({
@@ -82,17 +63,20 @@ export const RegistrationForm: FC<User> = () => {
   }
 
   const handleInputField = (e: ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target
     if (
-      e.target.name === 'email' ||
-      e.target.name === 'phoneNumber' ||
-      e.target.name === 'firstName' ||
-      e.target.name === 'lastName' ||
-      e.target.name === 'password'
+      e.target.name === 'Email' ||
+      e.target.name === 'PhoneNumber' ||
+      e.target.name === 'FirstName' ||
+      e.target.name === 'LastName' ||
+      e.target.name === 'PasswordHash'
     ) {
       handleError(`${e.target.name}Error`, false) // Sets error state to false
     }
-
-    setFormData({ ...formData, [e.target.name]: e.target.value })
+    setFormData((formData) => ({
+      ...formData,
+      ['query']: { ...formData['query'], [name]: value },
+    }))
   }
 
   const handleSignUp = async () => {
@@ -102,59 +86,72 @@ export const RegistrationForm: FC<User> = () => {
     const stripSpecialChars = (number: string) => {
       return number.replace(/[^+\d]+/g, '')
     }
+
     //will have to update accessors to match the new schema that aligns to the request object -- example: formData.query.Email instead of formData.email
     if (formData.query?.Email === '' && formData.query?.PhoneNumber === '') {
-      newErrors.emailError = true
-      newErrors.phoneNumberError = true
+      newErrors.EmailError = true
+      newErrors.PhoneNumberError = true
       setPhoneHelperText('An email or phone number is required')
     } else {
-      if (formData.query?.Email !== '' && emailRegex.test(formData.query?.Email ?? '') === false) {
-        newErrors.emailError = true
+      if (
+        formData.query?.Email !== '' &&
+        emailRegex.test(formData.query?.Email ?? '') === false
+      ) {
+        newErrors.EmailError = true
         setEmailHelperText('Please enter a valid email address')
-      } else newErrors.emailError = false
+      } else newErrors.EmailError = false
       if (
         formData.query?.PhoneNumber !== '' &&
-        phoneRegex.test(stripSpecialChars(formData.query?.PhoneNumber ?? '')) === false
+        phoneRegex.test(
+          stripSpecialChars(formData.query?.PhoneNumber ?? '')
+        ) === false
       ) {
-        newErrors.phoneNumberError = true
+        newErrors.PhoneNumberError = true
         setPhoneHelperText('Please enter a valid phone number')
-      } else newErrors.phoneNumberError = false
+      } else newErrors.PhoneNumberError = false
     }
-    if (formData.query?.FirstName === undefined || formData.query?.FirstName === '' || formData.query?.FirstName?.length < 2) {
-      newErrors.firstNameError = true
-    } else newErrors.firstNameError = false
+    if (
+      formData.query?.FirstName === undefined ||
+      formData.query?.FirstName === '' ||
+      formData.query?.FirstName?.length < 2
+    ) {
+      newErrors.FirstNameError = true
+    } else newErrors.FirstNameError = false
 
-    if (formData.query?.LastName === undefined ||formData.query?.LastName === '' || formData.query?.LastName.length < 2) {
-      newErrors.lastNameError = true
-    } else newErrors.lastNameError = false
+    if (
+      formData.query?.LastName === undefined ||
+      formData.query?.LastName === '' ||
+      formData.query?.LastName.length < 2
+    ) {
+      newErrors.LastNameError = true
+    } else newErrors.LastNameError = false
 
     if (
       formData.query?.PasswordHash === '' ||
       passwordRegex.test(formData.query?.PasswordHash ?? '') === false
     ) {
-      newErrors.passwordError = true
+      newErrors.PasswordHashError = true
     } else {
-      newErrors.passwordError = false
+      newErrors.PasswordHashError = false
     }
 
     setErrors(newErrors) // Sets error state to true
 
     if (
-      newErrors.emailError === false &&
-      newErrors.phoneNumberError === false &&
-      newErrors.firstNameError === false &&
-      newErrors.lastNameError === false &&
-      newErrors.passwordError === false
+      newErrors.EmailError === false &&
+      newErrors.PhoneNumberError === false &&
+      newErrors.FirstNameError === false &&
+      newErrors.LastNameError === false &&
+      newErrors.PasswordHashError === false
     ) {
       // Format phone number: xxx-xxx-xxxx    //updated and corrected error state where phone number is null/undefined
-      const formattedPhone = stripSpecialChars(formData.query?.PhoneNumber ?? '').replace(
-        /(\d{3})(\d{3})(\d{4})/,
-        '$1-$2-$3'
-      )
+      const formattedPhone = stripSpecialChars(
+        formData.query?.PhoneNumber ?? ''
+      ).replace(/(\d{3})(\d{3})(\d{4})/, '$1-$2-$3')
 
       const data = {
         ...formData,
-        phoneNumber: formattedPhone,
+        ['query']: { ...formData['query'], PhoneNumber: formattedPhone },
       }
 
       console.log(data, 'Data:')
@@ -190,21 +187,27 @@ export const RegistrationForm: FC<User> = () => {
 
   return (
     <Box
-      sx={{
-        display: 'flex',
-        flexDirection: 'column',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '100vw',
-        height: '100vh',
-      }}
+      sx={[
+        {
+          display: 'flex',
+          flexDirection: 'column',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '100dvw',
+          height: '100dvh',
+          overflow: 'hidden',
+        },
+      ]}
     >
       <Box
         sx={[
-          registrationStyle.container,
           {
+            display: 'flex',
             flexDirection: { xs: 'column', md: 'row' },
             justifyContent: { xs: 'center', md: 'space-evenly' },
+            alignItems: 'center',
+            height: 'inherit',
+            width: 'inherit',
           },
         ]}
       >
@@ -224,7 +227,10 @@ export const RegistrationForm: FC<User> = () => {
         <Box
           sx={[
             registrationStyle.formDiv,
-            { width: { xs: '95%', sm: '70%', md: '58%' } },
+            {
+              width: { xs: '95%', sm: '70%', md: '58%' },
+              overflowY: 'scroll',
+            },
           ]}
         >
           <Box
@@ -245,6 +251,10 @@ export const RegistrationForm: FC<User> = () => {
               ]}
             >
               <MyHeadings
+                text={'LOGO HERE'}
+                sx={{ fontSize: 'large', fontWeight: 800, marginBottom: 3 }}
+              />
+              <MyHeadings
                 text={'Create your account'}
                 sx={[
                   registrationStyle.h1,
@@ -253,10 +263,8 @@ export const RegistrationForm: FC<User> = () => {
               />
               <MyHeadings
                 text={'Get started with TicketMate today'}
-                sx={[
-                  registrationStyle.h2,
-                  { fontSize: { xs: '1.05rem', md: '1.25rem' } },
-                ]}
+                variant={'subtitle1'}
+                sx={{ fontSize: { xs: '1.05rem', md: '1.25rem' } }}
               />
               <Box
                 id="registration-sso-buttons"
@@ -265,8 +273,7 @@ export const RegistrationForm: FC<User> = () => {
                   flexDirection: { xs: 'column', lg: 'row' },
                   justifyContent: { xs: 'space-between', lg: 'space-evenly' },
                   alignItems: { xs: 'center', lg: 'center' },
-                  //width: { xs: '108%', lg: '95%' },
-                  width: { xs: '95%', lg: '92%' },
+                  width: { xs: '95%', lg: '100%' },
                   maxWidth: '500px',
                   marginBottom: 0.5,
                 }}
@@ -275,10 +282,7 @@ export const RegistrationForm: FC<User> = () => {
                   sx={[
                     registrationStyle.ssoButton,
                     {
-                      border: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #bbb',
-                      width: { xs: '230px', lg: '45%' },
+                      width: { xs: '230px', lg: '48%' },
                       marginBottom: { xs: 1, lg: 0 },
                     },
                   ]}
@@ -294,12 +298,7 @@ export const RegistrationForm: FC<User> = () => {
                 <MyButton
                   sx={[
                     registrationStyle.ssoButton,
-                    {
-                      border: prefersDarkMode
-                        ? '1px solid #fff'
-                        : '1px solid #bbb',
-                      width: { xs: '230px', lg: '45%' },
-                    },
+                    { width: { xs: '230px', lg: '48%' } },
                   ]}
                   typography={[
                     registrationStyle.ssoTypography,
@@ -337,74 +336,64 @@ export const RegistrationForm: FC<User> = () => {
                 variant={'outlined'}
                 sx={[
                   registrationStyle.textField,
-                  lightOrDarkmode,
+
                   {
                     width: { xs: '100%', md: '86%' },
                     marginBottom: 1.5,
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: errors.emailError
-                        ? 'red'
-                        : prefersDarkMode
-                          ? '#fff'
-                          : '#c9c9c9',
-                    },
-                    '& .MuiFormHelperText-root': {
-                      color: !errors.emailError
-                        ? prefersDarkMode
-                          ? 'rgba(255, 255, 255, 0.7)'
-                          : 'rgba(0, 0, 0, 0.7)'
-                        : 'red',
-                    },
                   },
                 ]}
-                error={errors.emailError}
+                error={errors.EmailError}
                 label={'Email'}
-                name={'email'}
+                name={'Email'}
                 value={formData.query?.Email ?? ''}
                 onChange={handleInputField}
                 helperText={
-                  errors.emailError
+                  errors.EmailError
                     ? emailHelperText
                     : "Don't worry, we won't spam you."
                 }
                 icon={<EmailIcon />}
                 position={'end'}
                 type={'text'}
-                prefersDarkMode={prefersDarkMode}
               />
+              <Box
+                id="registration-divider"
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  width: '100%',
+                }}
+              >
+                <MyDivider
+                  sx={[
+                    registrationStyle.divider,
+                    {
+                      color: prefersDarkMode ? '#aaa' : '#333',
+                      marginTop: -1,
+                      width: '50%',
+                    },
+                  ]}
+                  text={'or'}
+                />
+              </Box>
               <LabeledTextField
                 id={'phone-registration'}
                 sx={[
                   registrationStyle.textField,
-                  lightOrDarkmode,
+
                   {
                     width: { xs: '100%', md: '86%' },
-                    '& .MuiOutlinedInput-notchedOutline': {
-                      borderColor: errors.phoneNumberError
-                        ? 'red'
-                        : prefersDarkMode
-                          ? '#fff'
-                          : '#c9c9c9',
-                    },
-                    '& .MuiFormHelperText-root': {
-                      color: !errors.phoneNumberError
-                        ? prefersDarkMode
-                          ? 'rgba(255, 255, 255, 0.7)'
-                          : 'rgba(0, 0, 0, 0.7)'
-                        : 'red',
-                    },
                   },
                 ]}
-                error={errors.phoneNumberError}
-                name={'phoneNumber'}
+                error={errors.PhoneNumberError}
+                name={'PhoneNumber'}
                 value={formData.query?.PhoneNumber ?? ''}
                 onChange={handleInputField}
-                label={'Phone Number (optional)'}
-                helperText={errors.phoneNumberError ? phoneHelperText : ''}
+                label={'Phone Number'}
+                helperText={errors.PhoneNumberError ? phoneHelperText : ' '}
                 icon={<PhoneIcon />}
                 position={'end'}
                 type={'text'}
-                prefersDarkMode={prefersDarkMode}
               />
               <Box
                 id="registration-name-fields"
@@ -423,69 +412,37 @@ export const RegistrationForm: FC<User> = () => {
                   id={'first-name-registration'}
                   sx={[
                     registrationStyle.textField,
-                    lightOrDarkmode,
-                    {
-                      width: { xs: '100%', md: '48%' },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: errors.firstNameError
-                          ? 'red'
-                          : prefersDarkMode
-                            ? '#fff'
-                            : '#c9c9c9',
-                      },
-                      '& .MuiFormHelperText-root': {
-                        color: !errors.firstNameError
-                          ? prefersDarkMode
-                            ? 'rgba(255, 255, 255, 0.7)'
-                            : 'rgba(0, 0, 0, 0.7)'
-                          : 'red',
-                      },
-                    },
+
+                    { width: { xs: '100%', md: '48%' } },
                   ]}
-                  error={errors.firstNameError}
-                  name={'firstName'}
-                  label={'First Name'}
+                  error={errors.FirstNameError}
+                  name={'FirstName'}
+                  label={'First Name*'}
                   helperText={
-                    errors.firstNameError ? 'First name is required' : ''
+                    errors.FirstNameError ? 'First name is required' : ' '
                   }
                   value={formData.query?.FirstName ?? ''}
                   onChange={handleInputField}
                   type={'text'}
-                  prefersDarkMode={prefersDarkMode}
                 />
                 <LabeledTextField
                   id={'last-name-registration'}
                   sx={[
                     registrationStyle.textField,
-                    lightOrDarkmode,
+
                     {
                       width: { xs: '100%', md: '48%' },
-                      '& .MuiOutlinedInput-notchedOutline': {
-                        borderColor: errors.lastNameError
-                          ? 'red'
-                          : prefersDarkMode
-                            ? '#fff'
-                            : '#c9c9c9',
-                      },
-                      '& .MuiFormHelperText-root': {
-                        color: !errors.lastNameError
-                          ? prefersDarkMode
-                            ? 'rgba(255, 255, 255, 0.7)'
-                            : 'rgba(0, 0, 0, 0.7)'
-                          : 'red',
-                      },
                     },
                   ]}
-                  error={errors.lastNameError}
-                  name={'lastName'}
-                  label={'Last Name'}
+                  error={errors.LastNameError}
+                  name={'LastName'}
+                  label={'Last Name*'}
                   helperText={
-                    errors.lastNameError ? 'Last name is required' : ''
+                    errors.LastNameError ? 'Last name is required' : ' '
                   }
                   value={formData.query?.LastName ?? ''}
                   onChange={handleInputField}
                   type={'text'}
-                  prefersDarkMode={prefersDarkMode}
                 />
               </Box>
               <Box
@@ -506,42 +463,21 @@ export const RegistrationForm: FC<User> = () => {
                 >
                   <LabeledTextField
                     id={'password-registration'}
-                    sx={[
-                      registrationStyle.textField,
-                      lightOrDarkmode,
-                      {
-                        width: '98%',
-                        '& .MuiOutlinedInput-notchedOutline': {
-                          borderColor: errors.passwordError
-                            ? 'red'
-                            : prefersDarkMode
-                              ? '#fff'
-                              : '#c9c9c9',
-                        },
-                        '& .MuiFormHelperText-root': {
-                          color: !errors.passwordError
-                            ? prefersDarkMode
-                              ? 'rgba(255, 255, 255, 0.7)'
-                              : 'rgba(0, 0, 0, 0.7)'
-                            : 'red',
-                        },
-                      },
-                    ]}
-                    error={errors.passwordError}
+                    sx={[registrationStyle.textField, { width: '97%' }]}
+                    error={errors.PasswordHashError}
                     helperText={
-                      errors.passwordError
+                      errors.PasswordHashError
                         ? 'Password does not meet requirements'
                         : ''
                     }
-                    name={'password'}
-                    label={'Password'}
+                    name={'PasswordHash'}
+                    label={'Password*'}
                     value={formData.query?.PasswordHash ?? ''}
                     onChange={handleInputField}
                     type={showPassword ? 'text' : 'password'}
                     icon={showPassword ? <VisibilityOff /> : <VisibilityIcon />}
                     iconButton={handleShowPasswordButton}
                     position={'end'}
-                    prefersDarkMode={prefersDarkMode}
                   />
                 </Box>
                 <Box
@@ -555,10 +491,6 @@ export const RegistrationForm: FC<User> = () => {
                   }}
                 >
                   <MyToolTip
-                    handleClose={() => setOpenTooltip(false)}
-                    handleOpen={() => setOpenTooltip(true)}
-                    type={'clickable'}
-                    open={openTooltip}
                     placement={'top'}
                     title={
                       <>
@@ -573,7 +505,6 @@ export const RegistrationForm: FC<User> = () => {
                       </>
                     }
                     icon={<InfoIcon />}
-                    prefersDarkMode={prefersDarkMode}
                   />
                 </Box>
               </Box>
@@ -595,7 +526,6 @@ export const RegistrationForm: FC<User> = () => {
           </Box>
         </Box>
       </Box>
-      <Footer />
     </Box>
   )
 }

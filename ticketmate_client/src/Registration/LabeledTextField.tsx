@@ -14,7 +14,6 @@ interface TextFieldProps {
   icon?: ReactNode
   sx: {}
   type: string
-  prefersDarkMode: boolean
   inputProps?: string
   error?: boolean
 }
@@ -32,7 +31,6 @@ export const LabeledTextField: FC<TextFieldProps> = ({
   icon,
   sx,
   type,
-  prefersDarkMode,
   inputProps,
   error,
 }) => {
@@ -62,12 +60,7 @@ export const LabeledTextField: FC<TextFieldProps> = ({
               disabled={!iconButton ? true : false}
               sx={{ cursor: iconButton ? 'pointer' : 'default' }}
             >
-              <InputAdornment
-                sx={{ color: prefersDarkMode ? '#fff' : '#000' }}
-                position={position}
-              >
-                {icon}
-              </InputAdornment>
+              <InputAdornment position={position}>{icon}</InputAdornment>
             </IconButton>
           ) : undefined,
         }}
