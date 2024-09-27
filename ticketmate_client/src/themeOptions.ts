@@ -1,6 +1,6 @@
 // Theme options with example of adding a custom color.
 
-import { createTheme, PaletteColor, ThemeOptions } from '@mui/material'
+import { createTheme, PaletteColor, ThemeOptions } from '@mui/material/styles';
 
 declare module '@mui/material/styles' {
   interface Palette {
