@@ -1,14 +1,12 @@
 import { FC, useState } from 'react'
 import { Ticket } from '../../../types'
 import {
-  Avatar,
   AvatarGroup,
   MenuItem,
   Select,
   SelectChangeEvent,
   TableCell,
   TableRow,
-  useTheme,
 } from '@mui/material'
 import { User } from '../../../client'
 import UserAvatar from '../../../Shared/UserAvatar'
@@ -19,8 +17,6 @@ type Props = {
 }
 
 const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
-  const theme = useTheme()
-
   const priorityString =
     ticket.priorityId === 1
       ? 'High'
@@ -30,13 +26,10 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
 
   const [status, setStatus] = useState<number>(ticket.statusId)
 
-  const getUserName = (userGuid: string, initials: boolean = false) => {
+  const getUserNameByGuid = (userGuid: string) => {
     const user = users.find((user) => user.guid === userGuid)
-    return initials
-      ? `${user?.firstName?.charAt(0)}${user?.lastName?.charAt(0)}`
-      : `${user?.firstName} ${user?.lastName}`
+    return `${user?.firstName} ${user?.lastName}`
   }
-  // TODO: this isn't working right now
   const getTimeString = (timeStamp: string) => {
     const date = new Date(parseInt(timeStamp))
     return date.toLocaleDateString()
@@ -47,11 +40,12 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
 
   return (
     <TableRow>
+      {/* TODO:  Add functionality to open ticket view when the title is clicked*/}
       <TableCell>{ticket.title}</TableCell>
       <TableCell>
         <AvatarGroup max={4}>
           {ticket.assignedTo.map((userGuid) => {
-            const {firstName, lastName, avatar}: User = users.find(
+            const { firstName, lastName, avatar }: User = users.find(
               (user) => user.guid === userGuid
             )!
 
@@ -68,7 +62,7 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
           <MenuItem value={3}>Complete</MenuItem>
         </Select>
       </TableCell>
-      <TableCell>{getUserName(ticket.createdByUserGuid)}</TableCell>
+      <TableCell>{getUserNameByGuid(ticket.createdByUserGuid)}</TableCell>
       <TableCell>
         {ticket.modifiedOn.length > 0
           ? getTimeString(ticket.modifiedOn)
