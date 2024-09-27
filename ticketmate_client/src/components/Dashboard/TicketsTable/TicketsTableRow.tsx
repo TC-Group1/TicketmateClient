@@ -11,6 +11,7 @@ import {
   useTheme,
 } from '@mui/material'
 import { User } from '../../../client'
+import UserAvatar from '../../../Shared/UserAvatar'
 
 type Props = {
   ticket: Ticket
@@ -50,26 +51,11 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
       <TableCell>
         <AvatarGroup max={4}>
           {ticket.assignedTo.map((userGuid) => {
-            const currentUser: User = users.find(
+            const {firstName, lastName, avatar}: User = users.find(
               (user) => user.guid === userGuid
             )!
 
-            return currentUser.avatar ? (
-              <Avatar
-                sx={{ bgcolor: theme.palette.primary.main }}
-                alt={getUserName(currentUser.guid!)}
-                src={currentUser.avatar}
-              >
-                {}
-              </Avatar>
-            ) : (
-              <Avatar
-                sx={{ bgcolor: theme.palette.primary.main }}
-                alt={getUserName(currentUser.guid!)}
-              >
-                {getUserName(currentUser.guid!, true)}
-              </Avatar>
-            )
+            return <UserAvatar {...{ firstName, lastName, avatar }} />
           })}
         </AvatarGroup>
       </TableCell>
