@@ -18,9 +18,6 @@ import { Route as LoginIndexImport } from './routes/Login/index'
 import { Route as LoginLoginPageImport } from './routes/Login/LoginPage'
 import { Route as LoginLoginFormImport } from './routes/Login/LoginForm'
 import { Route as WithButtonAppBarDashboardIndexImport } from './routes/_with-ButtonAppBar/Dashboard/index'
-import { Route as WithButtonAppBarDashboardUsersTableImport } from './routes/_with-ButtonAppBar/Dashboard/UsersTable'
-import { Route as WithButtonAppBarDashboardTicketsTableImport } from './routes/_with-ButtonAppBar/Dashboard/TicketsTable'
-import { Route as WithButtonAppBarDashboardAnalyticsImport } from './routes/_with-ButtonAppBar/Dashboard/Analytics'
 
 // Create/Update Routes
 
@@ -57,24 +54,6 @@ const LoginLoginFormRoute = LoginLoginFormImport.update({
 const WithButtonAppBarDashboardIndexRoute =
   WithButtonAppBarDashboardIndexImport.update({
     path: '/Dashboard/',
-    getParentRoute: () => WithButtonAppBarRoute,
-  } as any)
-
-const WithButtonAppBarDashboardUsersTableRoute =
-  WithButtonAppBarDashboardUsersTableImport.update({
-    path: '/Dashboard/UsersTable',
-    getParentRoute: () => WithButtonAppBarRoute,
-  } as any)
-
-const WithButtonAppBarDashboardTicketsTableRoute =
-  WithButtonAppBarDashboardTicketsTableImport.update({
-    path: '/Dashboard/TicketsTable',
-    getParentRoute: () => WithButtonAppBarRoute,
-  } as any)
-
-const WithButtonAppBarDashboardAnalyticsRoute =
-  WithButtonAppBarDashboardAnalyticsImport.update({
-    path: '/Dashboard/Analytics',
     getParentRoute: () => WithButtonAppBarRoute,
   } as any)
 
@@ -124,27 +103,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof RegistrationIndexImport
       parentRoute: typeof rootRoute
     }
-    '/_with-ButtonAppBar/Dashboard/Analytics': {
-      id: '/_with-ButtonAppBar/Dashboard/Analytics'
-      path: '/Dashboard/Analytics'
-      fullPath: '/Dashboard/Analytics'
-      preLoaderRoute: typeof WithButtonAppBarDashboardAnalyticsImport
-      parentRoute: typeof WithButtonAppBarImport
-    }
-    '/_with-ButtonAppBar/Dashboard/TicketsTable': {
-      id: '/_with-ButtonAppBar/Dashboard/TicketsTable'
-      path: '/Dashboard/TicketsTable'
-      fullPath: '/Dashboard/TicketsTable'
-      preLoaderRoute: typeof WithButtonAppBarDashboardTicketsTableImport
-      parentRoute: typeof WithButtonAppBarImport
-    }
-    '/_with-ButtonAppBar/Dashboard/UsersTable': {
-      id: '/_with-ButtonAppBar/Dashboard/UsersTable'
-      path: '/Dashboard/UsersTable'
-      fullPath: '/Dashboard/UsersTable'
-      preLoaderRoute: typeof WithButtonAppBarDashboardUsersTableImport
-      parentRoute: typeof WithButtonAppBarImport
-    }
     '/_with-ButtonAppBar/Dashboard/': {
       id: '/_with-ButtonAppBar/Dashboard/'
       path: '/Dashboard'
@@ -160,9 +118,6 @@ declare module '@tanstack/react-router' {
 export const routeTree = rootRoute.addChildren({
   IndexRoute,
   WithButtonAppBarRoute: WithButtonAppBarRoute.addChildren({
-    WithButtonAppBarDashboardAnalyticsRoute,
-    WithButtonAppBarDashboardTicketsTableRoute,
-    WithButtonAppBarDashboardUsersTableRoute,
     WithButtonAppBarDashboardIndexRoute,
   }),
   LoginLoginFormRoute,
@@ -193,9 +148,6 @@ export const routeTree = rootRoute.addChildren({
     "/_with-ButtonAppBar": {
       "filePath": "_with-ButtonAppBar.tsx",
       "children": [
-        "/_with-ButtonAppBar/Dashboard/Analytics",
-        "/_with-ButtonAppBar/Dashboard/TicketsTable",
-        "/_with-ButtonAppBar/Dashboard/UsersTable",
         "/_with-ButtonAppBar/Dashboard/"
       ]
     },
@@ -210,18 +162,6 @@ export const routeTree = rootRoute.addChildren({
     },
     "/Registration/": {
       "filePath": "Registration/index.tsx"
-    },
-    "/_with-ButtonAppBar/Dashboard/Analytics": {
-      "filePath": "_with-ButtonAppBar/Dashboard/Analytics.tsx",
-      "parent": "/_with-ButtonAppBar"
-    },
-    "/_with-ButtonAppBar/Dashboard/TicketsTable": {
-      "filePath": "_with-ButtonAppBar/Dashboard/TicketsTable.tsx",
-      "parent": "/_with-ButtonAppBar"
-    },
-    "/_with-ButtonAppBar/Dashboard/UsersTable": {
-      "filePath": "_with-ButtonAppBar/Dashboard/UsersTable.tsx",
-      "parent": "/_with-ButtonAppBar"
     },
     "/_with-ButtonAppBar/Dashboard/": {
       "filePath": "_with-ButtonAppBar/Dashboard/index.tsx",
