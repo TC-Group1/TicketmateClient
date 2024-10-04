@@ -5,13 +5,17 @@ import CssBaseline from '@mui/material/CssBaseline'
 import { useMemo } from 'react'
 import { useMediaQuery } from '@mui/material'
 import getThemeOptions from './themeOptions'
+import { Footer } from './Shared/Footer'
 
 const App = () => {
   const router = createRouter({ routeTree })
 
   const prefersDarkMode = useMediaQuery('(prefers-color-scheme: dark)')
 
-  const theme = useMemo(() => createTheme(getThemeOptions(prefersDarkMode)), [prefersDarkMode])
+  const theme = useMemo(
+    () => createTheme(getThemeOptions(prefersDarkMode)),
+    [prefersDarkMode]
+  )
 
   return (
     <ThemeProvider {...{ theme }}>

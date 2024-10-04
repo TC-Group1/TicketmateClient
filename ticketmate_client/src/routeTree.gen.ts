@@ -15,7 +15,6 @@ import { Route as WithButtonAppBarImport } from './routes/_with-ButtonAppBar'
 import { Route as IndexImport } from './routes/index'
 import { Route as RegistrationIndexImport } from './routes/Registration/index'
 import { Route as LoginIndexImport } from './routes/Login/index'
-import { Route as RegistrationRegistrationFormImport } from './routes/Registration/RegistrationForm'
 import { Route as LoginLoginPageImport } from './routes/Login/LoginPage'
 import { Route as LoginLoginFormImport } from './routes/Login/LoginForm'
 import { Route as WithButtonAppBarDashboardIndexImport } from './routes/_with-ButtonAppBar/Dashboard/index'
@@ -44,12 +43,6 @@ const LoginIndexRoute = LoginIndexImport.update({
   path: '/Login/',
   getParentRoute: () => rootRoute,
 } as any)
-
-const RegistrationRegistrationFormRoute =
-  RegistrationRegistrationFormImport.update({
-    path: '/Registration/RegistrationForm',
-    getParentRoute: () => rootRoute,
-  } as any)
 
 const LoginLoginPageRoute = LoginLoginPageImport.update({
   path: '/Login/LoginPage',
@@ -117,13 +110,6 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof LoginLoginPageImport
       parentRoute: typeof rootRoute
     }
-    '/Registration/RegistrationForm': {
-      id: '/Registration/RegistrationForm'
-      path: '/Registration/RegistrationForm'
-      fullPath: '/Registration/RegistrationForm'
-      preLoaderRoute: typeof RegistrationRegistrationFormImport
-      parentRoute: typeof rootRoute
-    }
     '/Login/': {
       id: '/Login/'
       path: '/Login'
@@ -171,133 +157,19 @@ declare module '@tanstack/react-router' {
 
 // Create and export the route tree
 
-interface WithButtonAppBarRouteChildren {
-  WithButtonAppBarDashboardAnalyticsRoute: typeof WithButtonAppBarDashboardAnalyticsRoute
-  WithButtonAppBarDashboardTicketsTableRoute: typeof WithButtonAppBarDashboardTicketsTableRoute
-  WithButtonAppBarDashboardUsersTableRoute: typeof WithButtonAppBarDashboardUsersTableRoute
-  WithButtonAppBarDashboardIndexRoute: typeof WithButtonAppBarDashboardIndexRoute
-}
-
-const WithButtonAppBarRouteChildren: WithButtonAppBarRouteChildren = {
-  WithButtonAppBarDashboardAnalyticsRoute:
+export const routeTree = rootRoute.addChildren({
+  IndexRoute,
+  WithButtonAppBarRoute: WithButtonAppBarRoute.addChildren({
     WithButtonAppBarDashboardAnalyticsRoute,
-  WithButtonAppBarDashboardTicketsTableRoute:
     WithButtonAppBarDashboardTicketsTableRoute,
-  WithButtonAppBarDashboardUsersTableRoute:
     WithButtonAppBarDashboardUsersTableRoute,
-  WithButtonAppBarDashboardIndexRoute: WithButtonAppBarDashboardIndexRoute,
-}
-
-const WithButtonAppBarRouteWithChildren =
-  WithButtonAppBarRoute._addFileChildren(WithButtonAppBarRouteChildren)
-
-interface FileRoutesByFullPath {
-  '/': typeof IndexRoute
-  '': typeof WithButtonAppBarRouteWithChildren
-  '/Login/LoginForm': typeof LoginLoginFormRoute
-  '/Login/LoginPage': typeof LoginLoginPageRoute
-  '/Registration/RegistrationForm': typeof RegistrationRegistrationFormRoute
-  '/Login': typeof LoginIndexRoute
-  '/Registration': typeof RegistrationIndexRoute
-  '/Dashboard/Analytics': typeof WithButtonAppBarDashboardAnalyticsRoute
-  '/Dashboard/TicketsTable': typeof WithButtonAppBarDashboardTicketsTableRoute
-  '/Dashboard/UsersTable': typeof WithButtonAppBarDashboardUsersTableRoute
-  '/Dashboard': typeof WithButtonAppBarDashboardIndexRoute
-}
-
-interface FileRoutesByTo {
-  '/': typeof IndexRoute
-  '': typeof WithButtonAppBarRouteWithChildren
-  '/Login/LoginForm': typeof LoginLoginFormRoute
-  '/Login/LoginPage': typeof LoginLoginPageRoute
-  '/Registration/RegistrationForm': typeof RegistrationRegistrationFormRoute
-  '/Login': typeof LoginIndexRoute
-  '/Registration': typeof RegistrationIndexRoute
-  '/Dashboard/Analytics': typeof WithButtonAppBarDashboardAnalyticsRoute
-  '/Dashboard/TicketsTable': typeof WithButtonAppBarDashboardTicketsTableRoute
-  '/Dashboard/UsersTable': typeof WithButtonAppBarDashboardUsersTableRoute
-  '/Dashboard': typeof WithButtonAppBarDashboardIndexRoute
-}
-
-interface FileRoutesById {
-  '/': typeof IndexRoute
-  '/_with-ButtonAppBar': typeof WithButtonAppBarRouteWithChildren
-  '/Login/LoginForm': typeof LoginLoginFormRoute
-  '/Login/LoginPage': typeof LoginLoginPageRoute
-  '/Registration/RegistrationForm': typeof RegistrationRegistrationFormRoute
-  '/Login/': typeof LoginIndexRoute
-  '/Registration/': typeof RegistrationIndexRoute
-  '/_with-ButtonAppBar/Dashboard/Analytics': typeof WithButtonAppBarDashboardAnalyticsRoute
-  '/_with-ButtonAppBar/Dashboard/TicketsTable': typeof WithButtonAppBarDashboardTicketsTableRoute
-  '/_with-ButtonAppBar/Dashboard/UsersTable': typeof WithButtonAppBarDashboardUsersTableRoute
-  '/_with-ButtonAppBar/Dashboard/': typeof WithButtonAppBarDashboardIndexRoute
-}
-
-interface FileRouteTypes {
-  fileRoutesByFullPath: FileRoutesByFullPath
-  fullPaths:
-    | '/'
-    | ''
-    | '/Login/LoginForm'
-    | '/Login/LoginPage'
-    | '/Registration/RegistrationForm'
-    | '/Login'
-    | '/Registration'
-    | '/Dashboard/Analytics'
-    | '/Dashboard/TicketsTable'
-    | '/Dashboard/UsersTable'
-    | '/Dashboard'
-  fileRoutesByTo: FileRoutesByTo
-  to:
-    | '/'
-    | ''
-    | '/Login/LoginForm'
-    | '/Login/LoginPage'
-    | '/Registration/RegistrationForm'
-    | '/Login'
-    | '/Registration'
-    | '/Dashboard/Analytics'
-    | '/Dashboard/TicketsTable'
-    | '/Dashboard/UsersTable'
-    | '/Dashboard'
-  id:
-    | '/'
-    | '/_with-ButtonAppBar'
-    | '/Login/LoginForm'
-    | '/Login/LoginPage'
-    | '/Registration/RegistrationForm'
-    | '/Login/'
-    | '/Registration/'
-    | '/_with-ButtonAppBar/Dashboard/Analytics'
-    | '/_with-ButtonAppBar/Dashboard/TicketsTable'
-    | '/_with-ButtonAppBar/Dashboard/UsersTable'
-    | '/_with-ButtonAppBar/Dashboard/'
-  fileRoutesById: FileRoutesById
-}
-
-interface RootRouteChildren {
-  IndexRoute: typeof IndexRoute
-  WithButtonAppBarRoute: typeof WithButtonAppBarRouteWithChildren
-  LoginLoginFormRoute: typeof LoginLoginFormRoute
-  LoginLoginPageRoute: typeof LoginLoginPageRoute
-  RegistrationRegistrationFormRoute: typeof RegistrationRegistrationFormRoute
-  LoginIndexRoute: typeof LoginIndexRoute
-  RegistrationIndexRoute: typeof RegistrationIndexRoute
-}
-
-const rootRouteChildren: RootRouteChildren = {
-  IndexRoute: IndexRoute,
-  WithButtonAppBarRoute: WithButtonAppBarRouteWithChildren,
-  LoginLoginFormRoute: LoginLoginFormRoute,
-  LoginLoginPageRoute: LoginLoginPageRoute,
-  RegistrationRegistrationFormRoute: RegistrationRegistrationFormRoute,
-  LoginIndexRoute: LoginIndexRoute,
-  RegistrationIndexRoute: RegistrationIndexRoute,
-}
-
-export const routeTree = rootRoute
-  ._addFileChildren(rootRouteChildren)
-  ._addFileTypes<FileRouteTypes>()
+    WithButtonAppBarDashboardIndexRoute,
+  }),
+  LoginLoginFormRoute,
+  LoginLoginPageRoute,
+  LoginIndexRoute,
+  RegistrationIndexRoute,
+})
 
 /* prettier-ignore-end */
 
@@ -311,7 +183,6 @@ export const routeTree = rootRoute
         "/_with-ButtonAppBar",
         "/Login/LoginForm",
         "/Login/LoginPage",
-        "/Registration/RegistrationForm",
         "/Login/",
         "/Registration/"
       ]
@@ -333,9 +204,6 @@ export const routeTree = rootRoute
     },
     "/Login/LoginPage": {
       "filePath": "Login/LoginPage.tsx"
-    },
-    "/Registration/RegistrationForm": {
-      "filePath": "Registration/RegistrationForm.tsx"
     },
     "/Login/": {
       "filePath": "Login/index.tsx"
