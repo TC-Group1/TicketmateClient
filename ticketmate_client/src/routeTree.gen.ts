@@ -122,7 +122,6 @@ export const routeTree = rootRoute.addChildren({
   }),
   LoginLoginFormRoute,
   LoginLoginPageRoute,
-  RegistrationRegistrationFormRoute,
   LoginIndexRoute,
   RegistrationIndexRoute,
 })
