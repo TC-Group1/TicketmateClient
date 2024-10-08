@@ -1,4 +1,4 @@
-import React, { FC, ReactNode } from 'react'
+import React, { FC, ReactNode, useState } from 'react'
 import { IconButton, InputAdornment, TextField } from '@mui/material'
 
 interface TextFieldProps {
@@ -34,6 +34,19 @@ export const LabeledTextField: FC<TextFieldProps> = ({
   inputProps,
   error,
 }) => {
+  const [autoFilled, setAutoFilled] = useState<boolean>(false)
+
+  const animationStartHandler = () => (e: any) => {
+    const filled = !!e.target?.matches('*:-webkit-autofill')
+    if (e.animationName === 'mui-auto-fill') {
+      setAutoFilled(filled)
+    }
+
+    if (e.animationName === 'mui-auto-fill-cancel') {
+      setAutoFilled(filled)
+    }
+  }
+
   return (
     <>
       <TextField
@@ -50,8 +63,10 @@ export const LabeledTextField: FC<TextFieldProps> = ({
         error={error}
         // color is for the border when the input is focused
         // color={prefersDarkMode ? 'primary' : 'secondary'}
+        focused={autoFilled ? true : undefined}
         inputProps={{
           style: { color: inputProps },
+          onAnimationStart: animationStartHandler(),
         }}
         InputProps={{
           endAdornment: position ? (
