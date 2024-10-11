@@ -1,5 +1,5 @@
 import { Box, Table, TableBody, TableContainer } from '@mui/material'
-import { User } from '../../../client'
+import { User } from '../../client'
 import { FC } from 'react'
 import TeamTableRow from './TeamTableRow'
 

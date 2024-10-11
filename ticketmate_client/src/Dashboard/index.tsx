@@ -9,8 +9,8 @@ import {
   Typography,
 } from '@mui/material'
 import { useEffect, useState } from 'react'
-import Data from '../../mockProjectData.json'
-import { Project } from '../../types'
+import Data from '../mockProjectData.json'
+import { Project } from '../types'
 import TeamTable from './TeamTable'
 import TicketsTable from './TicketsTable'
 

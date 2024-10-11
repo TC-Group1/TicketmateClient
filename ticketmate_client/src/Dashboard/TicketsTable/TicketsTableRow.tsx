@@ -1,5 +1,5 @@
 import { FC, useState } from 'react'
-import { Ticket } from '../../../types'
+import { Ticket } from '../../types'
 import {
   AvatarGroup,
   MenuItem,
@@ -8,8 +8,8 @@ import {
   TableCell,
   TableRow,
 } from '@mui/material'
-import { User } from '../../../client'
-import UserAvatar from '../../../Shared/UserAvatar'
+import { User } from '../../client'
+import UserAvatar from '../../Shared/UserAvatar'
 
 type Props = {
   ticket: Ticket

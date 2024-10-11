@@ -1,7 +1,7 @@
 import { FC } from 'react'
-import { User } from '../../../client'
+import { User } from '../../client'
 import { TableCell, TableRow } from '@mui/material'
-import UserAvatar from '../../../Shared/UserAvatar'
+import UserAvatar from '../../Shared/UserAvatar'
 
 type Props = {
   user: User
