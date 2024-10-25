@@ -11,6 +11,7 @@
 // Import Routes
 
 import { Route as rootRoute } from './routes/__root'
+import { Route as TicketImport } from './routes/ticket'
 import { Route as WithButtonAppBarImport } from './routes/_with-ButtonAppBar'
 import { Route as IndexImport } from './routes/index'
 import { Route as RegistrationIndexImport } from './routes/Registration/index'
@@ -20,6 +21,11 @@ import { Route as LoginLoginFormImport } from './routes/Login/LoginForm'
 import { Route as WithButtonAppBarDashboardIndexImport } from './routes/_with-ButtonAppBar/Dashboard/index'
 
 // Create/Update Routes
+
+const TicketRoute = TicketImport.update({
+  path: '/ticket',
+  getParentRoute: () => rootRoute,
+} as any)
 
 const WithButtonAppBarRoute = WithButtonAppBarImport.update({
   id: '/_with-ButtonAppBar',
@@ -75,6 +81,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof WithButtonAppBarImport
       parentRoute: typeof rootRoute
     }
+    '/ticket': {
+      id: '/ticket'
+      path: '/ticket'
+      fullPath: '/ticket'
+      preLoaderRoute: typeof TicketImport
+      parentRoute: typeof rootRoute
+    }
     '/Login/LoginForm': {
       id: '/Login/LoginForm'
       path: '/Login/LoginForm'
@@ -120,6 +133,7 @@ export const routeTree = rootRoute.addChildren({
   WithButtonAppBarRoute: WithButtonAppBarRoute.addChildren({
     WithButtonAppBarDashboardIndexRoute,
   }),
+  TicketRoute,
   LoginLoginFormRoute,
   LoginLoginPageRoute,
   LoginIndexRoute,
@@ -136,6 +150,7 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/",
         "/_with-ButtonAppBar",
+        "/ticket",
         "/Login/LoginForm",
         "/Login/LoginPage",
         "/Login/",
@@ -150,6 +165,9 @@ export const routeTree = rootRoute.addChildren({
       "children": [
         "/_with-ButtonAppBar/Dashboard/"
       ]
+    },
+    "/ticket": {
+      "filePath": "ticket.tsx"
     },
     "/Login/LoginForm": {
       "filePath": "Login/LoginForm.tsx"

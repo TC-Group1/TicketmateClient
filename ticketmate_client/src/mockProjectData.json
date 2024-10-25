@@ -65,12 +65,15 @@
           "sprintGuid": null,
           "createdOn": "1725163200000",
           "modifiedOn": "1726517364000",
-          "assignedTo": ["f3b1767b-9ee6-4f90-b716-4d9ec76a1412"]
+          "assignedTo": [
+            "f3b1767b-9ee6-4f90-b716-4d9ec76a1412",
+            "0abc9e13-a26d-4bb5-8bf7-5b7c53557603"
+          ]
         },
         {
           "createdByUserGuid": "04d9bd06-62de-4a74-a1ee-feea62223b42",
           "description": "description",
-          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "guid": "85b5991c-f892-4266-b545-fd9035ca864b",
           "priorityId": 2,
           "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
           "statusId": 2,
@@ -83,7 +86,7 @@
         {
           "createdByUserGuid": "04d9bd06-62de-4a74-a1ee-feea62223b42",
           "description": "description",
-          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "guid": "1ad42f80-9f9a-4343-b5f2-e36b263a7486",
           "priorityId": 2,
           "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
           "statusId": 2,
@@ -96,7 +99,7 @@
         {
           "createdByUserGuid": "f3b1767b-9ee6-4f90-b716-4d9ec76a1412",
           "description": "description",
-          "guid": "4a39cc28-af6a-409c-be16-97b4efdc2ba0",
+          "guid": "23156ad4-dec4-4e2f-9bb7-c5ff9df5361c",
           "priorityId": 3,
           "projectGuid": "b1817d38-3d8f-4ec1-ac02-09af2eac9e5a",
           "statusId": 3,
