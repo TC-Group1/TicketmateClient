@@ -8,9 +8,9 @@ import {
   TableRow,
 } from '@mui/material'
 import { FC } from 'react'
-import { Ticket } from '../../../types'
+import { Ticket } from '../../types'
 import TicketsTableRow from './TicketsTableRow'
-import { User } from '../../../client'
+import { User } from '../../client'
 
 type Props = {
   tickets: Ticket[]
@@ -18,8 +18,6 @@ type Props = {
 }
 
 const TicketsTable: FC<Props> = ({ tickets, users }) => {
-
-
   return (
     <TableContainer component={Box}>
       <Table size="small">
@@ -36,9 +34,7 @@ const TicketsTable: FC<Props> = ({ tickets, users }) => {
         </TableHead>
         <TableBody>
           {tickets.map((ticket) => (
-            <TicketsTableRow
-              {...{ticket, users}}
-            />
+            <TicketsTableRow {...{ ticket, users }} />
           ))}
         </TableBody>
       </Table>

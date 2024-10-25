@@ -1,15 +1,18 @@
 import { FC, useState } from 'react'
-import { Ticket } from '../../../types'
+import { Ticket } from '../../types'
 import {
   AvatarGroup,
+  Button,
   MenuItem,
   Select,
   SelectChangeEvent,
   TableCell,
   TableRow,
 } from '@mui/material'
-import { User } from '../../../client'
-import UserAvatar from '../../../Shared/UserAvatar'
+import { User } from '../../client'
+import UserAvatar from '../../Shared/UserAvatar'
+import { Link } from '@tanstack/react-router'
+import getDateString from '../../utils/getDateString'
 
 type Props = {
   ticket: Ticket
@@ -30,10 +33,6 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
     const user = users.find((user) => user.guid === userGuid)
     return `${user?.firstName} ${user?.lastName}`
   }
-  const getTimeString = (timeStamp: string) => {
-    const date = new Date(parseInt(timeStamp))
-    return date.toLocaleDateString()
-  }
 
   const handleStatusChange = (event: SelectChangeEvent) =>
     setStatus(parseInt(event.target.value))
@@ -41,7 +40,13 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
   return (
     <TableRow>
       {/* TODO:  Add functionality to open ticket view when the title is clicked*/}
-      <TableCell>{ticket.title}</TableCell>
+      <TableCell>
+        <Link to="/ticket" search={{guid: ticket.guid}}>
+          <Button variant="text" sx={{ border: 'none' }}>
+            {ticket.title}
+          </Button>
+        </Link>
+      </TableCell>
       <TableCell>
         <AvatarGroup max={4}>
           {ticket.assignedTo.map((userGuid) => {
@@ -54,7 +59,7 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
         </AvatarGroup>
       </TableCell>
       <TableCell>{priorityString}</TableCell>
-      <TableCell>{getTimeString(ticket.createdOn)}</TableCell>
+      <TableCell>{getDateString(ticket.createdOn)}</TableCell>
       <TableCell>
         <Select value={status.toString()} onChange={handleStatusChange}>
           <MenuItem value={1}>New</MenuItem>
@@ -65,7 +70,7 @@ const TicketsTableRow: FC<Props> = ({ ticket, users }) => {
       <TableCell>{getUserNameByGuid(ticket.createdByUserGuid)}</TableCell>
       <TableCell>
         {ticket.modifiedOn.length > 0
-          ? getTimeString(ticket.modifiedOn)
+          ? getDateString(ticket.modifiedOn)
           : 'N/A'}
       </TableCell>
     </TableRow>
